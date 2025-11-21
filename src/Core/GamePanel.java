@@ -1,23 +1,27 @@
 package Core;
 
 import javax.swing.*;
+
+import Core.tile.TileManager;
+
 import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable{
 
     final int originalTileSize=16; //default size of mc and npc in the game
     final int scale=3;
-    final int tileSize=originalTileSize*scale; //64*64 tile
-    final int maxScreenCol=16;
-    final int maxScreenRow=12;
-    final int screenWidth= tileSize*maxScreenCol;
-    final int screenHeight= tileSize*maxScreenRow;
+    public final int tileSize=originalTileSize*scale; //64*64 tile
+    public final int maxScreenCol=16;
+    public final int maxScreenRow=12;
+    public final int screenWidth= tileSize*maxScreenCol;
+    public final int screenHeight= tileSize*maxScreenRow;
 
     int playerX=100;
     int playerY=100;
     int speed=4;
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
+    TileManager tileM= new TileManager(this);
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth,screenHeight));
@@ -62,6 +66,7 @@ public class GamePanel extends JPanel implements Runnable{
     //function to draw relevant components during the update
     public void paintComponent(Graphics graphics){
         super.paintComponent(graphics);
+        tileM.draw((Graphics2D)graphics);
         Graphics2D graphics2D = (Graphics2D) graphics;
         graphics2D.setColor(Color.white);
         graphics2D.fillRect(playerX,playerY,tileSize,tileSize);
