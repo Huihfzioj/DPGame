@@ -1,9 +1,8 @@
 package Core;
 
-import javax.swing.*;
-
 import Core.tile.TileManager;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -15,6 +14,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int maxScreenRow=12;
     public final int screenWidth= tileSize*maxScreenCol;
     public final int screenHeight= tileSize*maxScreenRow;
+    TileManager tileM = new TileManager(this);
 
     final int FPS = 60;
 
@@ -23,7 +23,6 @@ public class GamePanel extends JPanel implements Runnable{
     int speed=4;
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
-    TileManager tileM= new TileManager(this);
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth,screenHeight));
@@ -80,8 +79,9 @@ public class GamePanel extends JPanel implements Runnable{
     //function to draw relevant components during the update
     public void paintComponent(Graphics graphics){
         super.paintComponent(graphics);
-        tileM.draw((Graphics2D)graphics);
+
         Graphics2D graphics2D = (Graphics2D) graphics;
+        tileM.draw((Graphics2D) graphics);
         graphics2D.setColor(Color.white);
         graphics2D.fillRect(playerX,playerY,tileSize,tileSize);
         graphics2D.dispose(); //release resources(memory) if unneeded
