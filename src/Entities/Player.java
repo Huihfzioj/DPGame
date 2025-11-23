@@ -1,0 +1,126 @@
+package Entities;
+
+import Core.GamePanel;
+import Core.KeyHandler;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.Buffer;
+
+import static Core.GamePanel.tileSize;
+
+public class Player extends Entity{
+    GamePanel gamePanel;
+    KeyHandler keyHandler;
+    BufferedImage idle,right,left,right1,left1,up,up1,down,down1;
+    Direction direction;
+    int spriteCounter=0;
+    int spriteNumber=1;
+    public Player(GamePanel gamePanel,KeyHandler keyHandler){
+        this.gamePanel=gamePanel;
+        this.keyHandler=keyHandler;
+        setDefaultValues();
+        getPlayerImage();
+    }
+
+    public void setDefaultValues(){
+        this.setX(100);
+        this.setY(100);
+        this.setSpeed(4);
+    }
+
+    public void getPlayerImage(){
+        try{
+            idle= ImageIO.read(new File("src/Resources/Player/Ghost_idle.png"));
+            right= ImageIO.read(new File("src/Resources/Player/Ghost_right.png"));
+            left= ImageIO.read(new File("src/Resources/Player/Ghost_left.png"));
+            right1=ImageIO.read(new File("src/Resources/Player/Ghost_right (1).png"));
+            left1=ImageIO.read(new File("src/Resources/Player/Ghost_left (1).png"));
+            up=ImageIO.read(new File("src/Resources/Player/Ghost_up.png"));
+            up1=ImageIO.read(new File("src/Resources/Player/Ghost_up (1).png"));
+            down=ImageIO.read(new File("src/Resources/Player/Ghost_down.png"));
+            down1=ImageIO.read(new File("src/Resources/Player/Ghost_down (1).png"));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    public void update(){
+        if (keyHandler.getUpPressed()){
+            direction=Direction.UP;
+            this.setY(this.getY()-this.getSpeed());
+        }
+        else if (keyHandler.getDownPressed()){
+            direction=Direction.DOWN;
+            this.setY(this.getY()+this.getSpeed());
+        }
+        else if (keyHandler.getLeftPressed()){
+            direction=Direction.LEFT;
+            this.setX(this.getX()-this.getSpeed());
+
+        }
+        else if (keyHandler.getRightPressed()){
+            direction=Direction.RIGHT;
+            this.setX(this.getX()+this.getSpeed());
+        }
+        else {
+            direction=Direction.NotSpecified;
+        }
+        spriteCounter++;
+        if (spriteCounter > 50){
+            if (spriteNumber == 1){
+                spriteNumber = 2;
+            }
+            else if (spriteNumber == 2){
+                spriteNumber = 1;
+            }
+            else{
+                spriteCounter = 0;
+            }
+        }
+    }
+
+    public void draw(Graphics2D graphics2D){
+        BufferedImage image=null;
+        switch(direction){
+            case UP :
+                if (spriteNumber == 1){
+                    image=up;
+                }
+                if (spriteNumber == 2){
+                    image=up1;
+                }
+                break;
+            case DOWN :
+                if (spriteNumber == 1){
+                    image=down;
+                }
+                if (spriteNumber == 2){
+                    image=down1;
+                }
+                break;
+            case LEFT:
+                if (spriteNumber == 1){
+                    image=left;
+                }
+                if (spriteNumber == 2){
+                    image=left1;
+                }
+                break;
+            case RIGHT:
+                if (spriteNumber == 1){
+                    image=right;
+                }
+                if (spriteNumber == 2){
+                    image=right1;
+                }
+                break;
+            default:
+                image=idle;
+        }
+        graphics2D.drawImage(image,this.getX(),this.getY(),tileSize,tileSize,null);
+    }
+
+}
