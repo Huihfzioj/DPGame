@@ -1,5 +1,6 @@
 package Core;
 
+import Core.tile.TileManager;
 import Entities.Player;
 
 import javax.swing.*;
@@ -10,10 +11,12 @@ public class GamePanel extends JPanel implements Runnable{
     public final static int originalTileSize=16; //default size of mc and npc in the game
     public final static int scale=3;
     public final static int tileSize=originalTileSize*scale; //64*64 tile
-    final int maxScreenCol=16;
-    final int maxScreenRow=12;
-    final int screenWidth= tileSize*maxScreenCol;
-    final int screenHeight= tileSize*maxScreenRow;
+    public final int maxScreenCol=16;
+    public final int maxScreenRow=12;
+    public final int screenWidth= tileSize*maxScreenCol;
+    public final int screenHeight= tileSize*maxScreenRow;
+    TileManager tileM = new TileManager(this);
+
 
     final int FPS = 60;
 
@@ -65,7 +68,9 @@ public class GamePanel extends JPanel implements Runnable{
     //function to draw relevant components during the update
     public void paintComponent(Graphics graphics){
         super.paintComponent(graphics);
+
         Graphics2D graphics2D = (Graphics2D) graphics;
+        tileM.draw((Graphics2D) graphics);
         player.draw(graphics2D);
         graphics2D.dispose(); //release resources(memory) if unneeded
     }
