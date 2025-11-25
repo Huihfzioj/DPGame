@@ -3,7 +3,7 @@ package Entities;
 import java.awt.image.BufferedImage;
 
 public class Entity {
-    private int x,y;
+    private int worldx,worldy;
     private int speed;
     private BufferedImage idle,up1,up2,down1,down2,left1,left2,right1,right2;
     private Direction direction;
@@ -12,30 +12,30 @@ public class Entity {
 
     }
 
-    public Entity(int x, int y, int speed) {
-        this.x = x;
-        this.y = y;
+    public Entity(int worldx, int worldy, int speed) {
+        this.worldx = worldx;
+        this.worldy = worldy;
         this.speed = speed;
     }
 
     // Getter for x
-    public int getX() {
-        return x;
+    public int getworldX() {
+        return worldx;
     }
 
     // Setter for x
-    public void setX(int x) {
-        this.x = x;
+    public void setworldX(int worldx) {
+        this.worldx = worldx;
     }
 
     // Getter for y
-    public int getY() {
-        return y;
+    public int getworldY() {
+        return worldy;
     }
 
     // Setter for y
-    public void setY(int y) {
-        this.y = y;
+    public void setworldY(int worldy) {
+        this.worldy = worldy;
     }
 
     // Getter for speed

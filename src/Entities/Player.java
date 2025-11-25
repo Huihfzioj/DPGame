@@ -19,16 +19,20 @@ public class Player extends Entity{
     Direction direction;
     int spriteCounter=0;
     int spriteNumber=1;
+    public final int screenx;
+    public final int screeny;
     public Player(GamePanel gamePanel,KeyHandler keyHandler){
         this.gamePanel=gamePanel;
         this.keyHandler=keyHandler;
+        screenx = gamePanel.screenWidth/2 - (gamePanel.tileSize/2);
+        screeny = gamePanel.screenHeight/2 - (gamePanel.tileSize/2);
         setDefaultValues();
         getPlayerImage();
     }
 
     public void setDefaultValues(){
-        this.setX(100);
-        this.setY(100);
+        this.setworldX(gamePanel.tileSize *23);
+        this.setworldY(gamePanel.tileSize *21);
         this.setSpeed(4);
     }
 
@@ -50,20 +54,20 @@ public class Player extends Entity{
     public void update(){
         if (keyHandler.getUpPressed()){
             direction=Direction.UP;
-            this.setY(this.getY()-this.getSpeed());
+            this.setworldY(this.getworldY()-this.getSpeed());
         }
         else if (keyHandler.getDownPressed()){
             direction=Direction.DOWN;
-            this.setY(this.getY()+this.getSpeed());
+            this.setworldY(this.getworldY()+this.getSpeed());
         }
         else if (keyHandler.getLeftPressed()){
             direction=Direction.LEFT;
-            this.setX(this.getX()-this.getSpeed());
+            this.setworldX(this.getworldX()-this.getSpeed());
 
         }
         else if (keyHandler.getRightPressed()){
             direction=Direction.RIGHT;
-            this.setX(this.getX()+this.getSpeed());
+            this.setworldX(this.getworldX()+this.getSpeed());
         }
         else {
             direction=Direction.NotSpecified;
@@ -120,7 +124,7 @@ public class Player extends Entity{
             default:
                 image=idle;
         }
-        graphics2D.drawImage(image,this.getX(),this.getY(),tileSize,tileSize,null);
+        graphics2D.drawImage(image,screenx,screeny,tileSize,tileSize,null);
     }
 
 }
