@@ -1,5 +1,6 @@
 package Entities;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Entity {
@@ -7,6 +8,11 @@ public class Entity {
     private int speed;
     private BufferedImage idle,up1,up2,down1,down2,left1,left2,right1,right2;
     private Direction direction;
+    public int spriteCounter = 0;
+    public int spriteNum = 1;
+    public Rectangle solidArea ;
+    public boolean collisionOn = false ;
+
 
     public Entity(){
 
@@ -46,5 +52,17 @@ public class Entity {
     // Setter for speed
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+
+
+
+    // Getter pour direction (celui qui manque)
+    public Direction getDirection() {
+        return direction;
+    }
+
+    // Setter pour direction (celui qui manque)
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 }

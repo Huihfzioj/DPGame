@@ -6,9 +6,7 @@ import Core.KeyHandler;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.nio.Buffer;
 
 import static Core.GamePanel.tileSize;
 
@@ -16,16 +14,22 @@ public class Player extends Entity{
     GamePanel gamePanel;
     KeyHandler keyHandler;
     BufferedImage idle,right,left,right1,left1,up,up1,down,down1;
-    Direction direction;
+    // La variable 'direction' locale a été SUPPRIMÉE.
     int spriteCounter=0;
     int spriteNumber=1;
     public final int screenx;
     public final int screeny;
+
     public Player(GamePanel gamePanel,KeyHandler keyHandler){
         this.gamePanel=gamePanel;
         this.keyHandler=keyHandler;
         screenx = gamePanel.screenWidth/2 - (gamePanel.tileSize/2);
         screeny = gamePanel.screenHeight/2 - (gamePanel.tileSize/2);
+        solidArea = new Rectangle();
+        solidArea.x = 8;
+        solidArea.y = 6;
+        solidArea.width = 32;
+        solidArea.height = 32;
         setDefaultValues();
         getPlayerImage();
     }
@@ -34,6 +38,8 @@ public class Player extends Entity{
         this.setworldX(gamePanel.tileSize *23);
         this.setworldY(gamePanel.tileSize *21);
         this.setSpeed(4);
+        // Initialisation de la direction par défaut
+        this.setDirection(Direction.DOWN);
     }
 
     public void getPlayerImage(){
@@ -51,27 +57,50 @@ public class Player extends Entity{
             e.printStackTrace();
         }
     }
+
     public void update(){
+        // Utilisation des setters pour mettre à jour la direction dans l'objet Entity
         if (keyHandler.getUpPressed()){
-            direction=Direction.UP;
-            this.setworldY(this.getworldY()-this.getSpeed());
+            this.setDirection(Direction.UP);
         }
         else if (keyHandler.getDownPressed()){
-            direction=Direction.DOWN;
-            this.setworldY(this.getworldY()+this.getSpeed());
+            this.setDirection(Direction.DOWN);
         }
         else if (keyHandler.getLeftPressed()){
-            direction=Direction.LEFT;
-            this.setworldX(this.getworldX()-this.getSpeed());
-
+            this.setDirection(Direction.LEFT);
         }
         else if (keyHandler.getRightPressed()){
-            direction=Direction.RIGHT;
-            this.setworldX(this.getworldX()+this.getSpeed());
+            this.setDirection(Direction.RIGHT);
         }
         else {
-            direction=Direction.NotSpecified;
+            this.setDirection(Direction.NotSpecified);
         }
+
+        // check tile collision
+        collisionOn = false;
+        gamePanel.ccheker.chektile(this);
+
+        // if collision is false player can move
+        if (collisionOn == false) {
+            // Utilisation du getter pour lire la direction
+            switch(this.getDirection()) {
+                case UP:
+                    this.setworldY(this.getworldY()-this.getSpeed());
+                    break;
+                case DOWN:
+                    this.setworldY(this.getworldY()+this.getSpeed());
+                    break;
+                case LEFT:
+                    this.setworldX(this.getworldX()-this.getSpeed());
+                    break;
+                case RIGHT:
+                    this.setworldX(this.getworldX()+this.getSpeed());
+                    break;
+                case NotSpecified:
+                    break; // Ne bouge pas
+            }
+        }
+
         spriteCounter++;
         if (spriteCounter > 50){
             if (spriteNumber == 1){
@@ -80,6 +109,7 @@ public class Player extends Entity{
             else if (spriteNumber == 2){
                 spriteNumber = 1;
             }
+            // Correction : Reset du spriteCounter après le cycle
             else{
                 spriteCounter = 0;
             }
@@ -88,7 +118,9 @@ public class Player extends Entity{
 
     public void draw(Graphics2D graphics2D){
         BufferedImage image=null;
-        switch(direction){
+
+        // Utilisation du getter pour lire la direction
+        switch(this.getDirection()){
             case UP :
                 if (spriteNumber == 1){
                     image=up;
