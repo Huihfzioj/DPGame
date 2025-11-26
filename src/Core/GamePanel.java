@@ -2,6 +2,7 @@ package Core;
 
 import Core.tile.TileManager;
 import Entities.Player;
+import object.SuperObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,14 +27,18 @@ public class GamePanel extends JPanel implements Runnable{
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
     public CollisionChecker ccheker = new CollisionChecker(this);
+    public AssetSetter aSetter = new AssetSetter(this);
     public Player player = new Player(this,keyHandler);
-
+    public SuperObject obj[] = new SuperObject[10];
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth,screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler); //Listen to key user input
         this.setFocusable(true); //Make the panel focus on getting key input
+    }
+    public void setupGame (){
+        aSetter.setObject();
     }
 
     public void startGameThread(){
@@ -70,12 +75,24 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     //function to draw relevant components during the update
-    public void paintComponent(Graphics graphics){
-        super.paintComponent(graphics);
+    public void paintComponent (Graphics g) {
 
-        Graphics2D graphics2D = (Graphics2D) graphics;
-        tileM.draw((Graphics2D) graphics);
-        player.draw(graphics2D);
-        graphics2D.dispose(); //release resources(memory) if unneeded
+        super.paintComponent (g);
+        Graphics2D g2 = (Graphics2D)g;
+
+        // TILE
+        tileM.draw(g2);
+
+        // OBJECT
+        for(int i = 0; i < obj.length; i++) {
+            if (obj[i] != null) {
+                obj[i].draw(g2, this);
+            }
+        }
+
+        // PLAYER
+        player.draw(g2);
+
+        g2.dispose ();
     }
 }
