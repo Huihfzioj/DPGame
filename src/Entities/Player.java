@@ -19,7 +19,7 @@ public class Player extends Entity{
     int spriteNumber=1;
     public final int screenx;
     public final int screeny;
-
+    int haskey = 0;
     public Player(GamePanel gamePanel,KeyHandler keyHandler){
         this.gamePanel=gamePanel;
         this.keyHandler=keyHandler;
@@ -28,6 +28,8 @@ public class Player extends Entity{
         solidArea = new Rectangle();
         solidArea.x = 8;
         solidArea.y = 6;
+        SolidAreaDefaultX = solidArea.x;
+        SolidAreaDefaultY = solidArea.y;
         solidArea.width = 32;
         solidArea.height = 32;
         setDefaultValues();
@@ -79,7 +81,9 @@ public class Player extends Entity{
         // check tile collision
         collisionOn = false;
         gamePanel.ccheker.chektile(this);
-
+        // check object collision
+        int objectindexe = gamePanel.ccheker.checkObject(this,true);
+        pickUpObject(objectindexe);
         // if collision is false player can move
         if (collisionOn == false) {
             // Utilisation du getter pour lire la direction
@@ -112,6 +116,26 @@ public class Player extends Entity{
             // Correction : Reset du spriteCounter après le cycle
             else{
                 spriteCounter = 0;
+            }
+        }
+    }
+    public void pickUpObject (int i) {
+        if (i != 999){
+            String objectName = gamePanel.obj[i].name;
+
+            switch (objectName) {
+                case "Key":
+                    haskey++;
+                    gamePanel.obj[i] = null;
+                    System.out.println("Key:"+haskey);
+                    break;
+                case "Door":
+                    if (haskey > 0) {
+                        gamePanel.obj[i] = null;
+                        haskey--;
+                    }
+                    System.out.println("Key:"+haskey);
+                    break;
             }
         }
     }
