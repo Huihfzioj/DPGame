@@ -20,14 +20,14 @@ public class GamePanel extends JPanel implements Runnable{
   // world settings
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
-    public final int worldWidth = tileSize * maxWorldCol;
-    public final int worldHeight = tileSize * maxWorldRow;
-    final int FPS = 60;
 
+    final int FPS = 60;
+    Sound sound = new Sound();
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
     public CollisionChecker ccheker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
+
     public Player player = new Player(this,keyHandler);
     public SuperObject obj[] = new SuperObject[10];
     public GamePanel(){
@@ -38,7 +38,10 @@ public class GamePanel extends JPanel implements Runnable{
         this.setFocusable(true); //Make the panel focus on getting key input
     }
     public void setupGame (){
+
         aSetter.setObject();
+        playMusic(0);
+
     }
 
     public void startGameThread(){
@@ -94,5 +97,19 @@ public class GamePanel extends JPanel implements Runnable{
         player.draw(g2);
 
         g2.dispose ();
+    }
+    public void playMusic(int i) {
+        sound.setFile(i);
+        sound.play();
+        sound.loop();
+    }
+
+    public void stopMusic() {
+        sound.stop();
+    }
+
+    public void playSE(int i) {
+        sound.setFile(i);
+        sound.play();
     }
 }

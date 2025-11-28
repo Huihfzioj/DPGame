@@ -125,16 +125,23 @@ public class Player extends Entity{
 
             switch (objectName) {
                 case "Key":
+                    gamePanel.playSE(1);
                     haskey++;
                     gamePanel.obj[i] = null;
                     System.out.println("Key:"+haskey);
                     break;
                 case "Door":
+                    gamePanel.playSE(3);
                     if (haskey > 0) {
                         gamePanel.obj[i] = null;
                         haskey--;
                     }
                     System.out.println("Key:"+haskey);
+                    break;
+                case "Boots" :
+                    gamePanel.playSE(2);
+                    this.setSpeed(this.getSpeed() + 2);
+                    gamePanel.obj[i] = null;
                     break;
             }
         }
