@@ -14,6 +14,10 @@ public class Entity {
     public boolean collisionOn = false ;
     public int SolidAreaDefaultX, SolidAreaDefaultY;
 
+    //CHARACTER STATUS
+    public int maxLife;
+    public int life;
+
     public Entity(){
 
     }

@@ -2,6 +2,8 @@ package Entities;
 
 import Core.GamePanel;
 import Core.KeyHandler;
+import Core.UI;
+import Core.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -19,7 +21,7 @@ public class Player extends Entity{
     int spriteNumber=1;
     public final int screenx;
     public final int screeny;
-    int haskey = 0;
+    public int haskey = 0;
     public Player(GamePanel gamePanel,KeyHandler keyHandler){
         this.gamePanel=gamePanel;
         this.keyHandler=keyHandler;
@@ -42,22 +44,36 @@ public class Player extends Entity{
         this.setSpeed(4);
         // Initialisation de la direction par défaut
         this.setDirection(Direction.DOWN);
+        //PLAYER STATUS
+        maxLife =6;
+        life=maxLife;
     }
 
     public void getPlayerImage(){
+
+
+        idle = setup("Ghost_idle");
+        right = setup("Ghost_right");
+        left = setup("Ghost_left");
+        right1 = setup("Ghost_right (1)");
+        left1 = setup("Ghost_left (1)");
+        up = setup("Ghost_up");
+        up1 = setup("Ghost_up (1)");
+        down = setup("Ghost_down");
+        down1 = setup("Ghost_down (1)");
+
+    }
+    public BufferedImage setup(String imageName){
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null ;
         try{
-            idle= ImageIO.read(getClass().getResourceAsStream("/Player/Ghost_idle.png"));
-            right= ImageIO.read(getClass().getResourceAsStream("/Player/Ghost_right.png"));
-            left= ImageIO.read(getClass().getResourceAsStream("/Player/Ghost_left.png"));
-            right1=ImageIO.read(getClass().getResourceAsStream("/Player/Ghost_right (1).png"));
-            left1=ImageIO.read(getClass().getResourceAsStream("/Player/Ghost_left (1).png"));
-            up=ImageIO.read(getClass().getResourceAsStream("/Player/Ghost_up.png"));
-            up1=ImageIO.read(getClass().getResourceAsStream("/Player/Ghost_up (1).png"));
-            down=ImageIO.read(getClass().getResourceAsStream("/Player/Ghost_down.png"));
-            down1=ImageIO.read(getClass().getResourceAsStream("/Player/Ghost_down (1).png"));
-        }catch (IOException e){
+            image = ImageIO.read(getClass().getResourceAsStream("/Player/"+imageName+".png"));
+            image = uTool.scaleImage(image,gamePanel.tileSize,gamePanel.tileSize);
+
+        }catch (Exception e){
             e.printStackTrace();
         }
+        return  image;
     }
 
     public void update(){
@@ -128,20 +144,28 @@ public class Player extends Entity{
                     gamePanel.playSE(1);
                     haskey++;
                     gamePanel.obj[i] = null;
-                    System.out.println("Key:"+haskey);
+                    gamePanel.ui.showMessage("you got a Memory");
                     break;
                 case "Door":
                     gamePanel.playSE(3);
                     if (haskey > 0) {
                         gamePanel.obj[i] = null;
                         haskey--;
+                        gamePanel.ui.showMessage("you opened the door");
                     }
-                    System.out.println("Key:"+haskey);
+                    else {
+                        gamePanel.ui.showMessage("you need a key!");
+                    }
                     break;
                 case "Boots" :
                     gamePanel.playSE(2);
                     this.setSpeed(this.getSpeed() + 2);
                     gamePanel.obj[i] = null;
+                    break;
+                case "Chest":
+                    gamePanel.ui.gameFinished = true;
+                    gamePanel.stopMusic();
+                    gamePanel.playSE(4);
                     break;
             }
         }
@@ -187,7 +211,7 @@ public class Player extends Entity{
             default:
                 image=idle;
         }
-        graphics2D.drawImage(image,screenx,screeny,tileSize,tileSize,null);
+        graphics2D.drawImage(image,screenx,screeny,null);
     }
 
 }
