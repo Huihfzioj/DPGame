@@ -64,9 +64,11 @@ public class UI {
         } else if (gamePanel.gameState instanceof PauseState) {
             drawPauseScreen(g2d);
         } else if (gamePanel.gameState instanceof PlayState) {
+            drawPlayerLife();
         }
     }
     public void drawPauseScreen(Graphics2D g2){
+        drawPlayerLife();
         g2.setFont(font.deriveFont(Font.BOLD, 50F));
         String text = "Game Paused";
         int x = getXForCenteredText(g2, text);
@@ -88,6 +90,35 @@ public class UI {
         g2.setColor(Color.yellow);
         g2.drawString(instruction, x, y);
     }
+
+    private void drawPlayerLife() {
+        int x = GamePanel.tileSize/2;
+        int y = GamePanel.tileSize/2;
+        int i = 0;
+
+        // Draw Blank Heart
+        while (i < gamePanel.player.maxLife/2){
+            graphics2D.drawImage(heart_blank,x,y,null);
+            i++;
+            x += GamePanel.tileSize;
+        }
+
+        // Reset
+        x = GamePanel.tileSize/2;
+        y = GamePanel.tileSize/2;
+        i = 0;
+
+        while(i < gamePanel.player.life){
+            graphics2D.drawImage(heart_half,x,y,null);
+            i++;
+            if (i < gamePanel.player.life){
+                graphics2D.drawImage(heart_full,x,y,null);
+            }
+            i++;
+            x += GamePanel.tileSize;
+        }
+    }
+
     public int getXForCenteredText(Graphics2D g2, String text) {
         int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
         int x = gamePanel.screenWidth / 2 - length / 2;
