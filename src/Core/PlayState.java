@@ -28,5 +28,13 @@ public class PlayState implements GameState {
         game.player.draw(g2);
         game.ui.draw(g2);           // affiche UI spécifique au gameplay
     }
+
+    @Override
+    public void handleInput(KeyHandler keyHandler) {
+        if (keyHandler.ispPressed()) {
+            game.setGameState(new PauseState(game,this));
+            keyHandler.setpPressed(false);
+        }
+    }
 }
 

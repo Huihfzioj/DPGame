@@ -19,11 +19,18 @@ public class PauseState implements GameState {
     @Override
     public void draw(Graphics2D g2) {
         previousState.draw(g2);      // affiche le jeu gelé
-        game.ui.drawPauseScreen();   // affiche overlay pause
+        game.ui.draw(g2);             // This will set up fonts properly
     }
-
     public GameState getPreviousState() {
         return previousState;
+    }
+
+    @Override
+    public void handleInput(KeyHandler keyHandler) {
+        if (keyHandler.ispPressed()) {
+            game.setGameState(previousState);
+            keyHandler.setpPressed(false);
+        }
     }
 }
 

@@ -80,7 +80,8 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void update() {
-        if(gameState != null) {
+        if (gameState !=null) {
+            gameState.handleInput(keyHandler);
             gameState.update();
         }
     }
