@@ -33,11 +33,14 @@ public class KeyHandler implements KeyListener {
             downPressed=true;
         }
         if(code == KeyEvent.VK_P) {
-            if (gamePanel.gameState == gamePanel.playState) {
-                gamePanel.gameState = gamePanel.pauseState;
-            } else if (gamePanel.gameState == gamePanel.pauseState){
-                gamePanel.gameState=gamePanel.playState;
+            if (gamePanel.gameState instanceof PlayState) {
+                gamePanel.setGameState(new PauseState(gamePanel, gamePanel.gameState));
+            } else if (gamePanel.gameState instanceof PauseState) {
+                gamePanel.setGameState(((PauseState) gamePanel.gameState).getPreviousState());
             }
+        }
+        if(code == KeyEvent.VK_ENTER && gamePanel.gameState instanceof MenuState){
+            gamePanel.setGameState(new PlayState(gamePanel));
         }
         //DEBUG
         if(code == KeyEvent.VK_T){

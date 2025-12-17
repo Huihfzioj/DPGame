@@ -32,22 +32,19 @@ public class GamePanel extends JPanel implements Runnable{
     public Player player = new Player(this,keyHandler);
     public SuperObject obj[] = new SuperObject[10];
 
-
-    final int playState = 1;
-    final int pauseState = 2;
-    int gameState = playState;
+    GameState gameState;
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth,screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler); //Listen to key user input
         this.setFocusable(true); //Make the panel focus on getting key input
+        this.gameState=new MenuState(this);
     }
     public void setupGame (){
 
         aSetter.setObject();
         playMusic(0);
-        gameState = playState;
     }
 
     public void startGameThread(){
@@ -78,12 +75,13 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 
-    //function to update information for the scene such as player positions
-    public void update(){
-        if (gameState==playState){
-            player.update();
-        } else if (gameState == pauseState) {
+    public void setGameState(GameState newState) {
+        this.gameState = newState;
+    }
 
+    public void update() {
+        if(gameState != null) {
+            gameState.update();
         }
     }
 
@@ -98,22 +96,9 @@ public class GamePanel extends JPanel implements Runnable{
         if(keyHandler.checkDrawTime==true){
             drawStart=System.nanoTime();
         }
-
-
-        // TILE
-        tileM.draw(g2);
-
-        // OBJECT
-        for(int i = 0; i < obj.length; i++) {
-            if (obj[i] != null) {
-                obj[i].draw(g2, this);
-            }
+        if(gameState != null) {
+            gameState.draw(g2);
         }
-
-        // PLAYER
-        player.draw(g2);
-        //UI
-        ui.draw(g2);
         //DEBUG
         if(keyHandler.checkDrawTime==true){
             long drawEnd = System.nanoTime();
