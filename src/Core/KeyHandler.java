@@ -4,10 +4,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
-
-    private boolean upPressed, downPressed, leftPressed, rightPressed;
+    GamePanel gamePanel;
+    private boolean upPressed, downPressed, leftPressed, rightPressed,enterPressed,pPressed;
     //DEBUG
     boolean checkDrawTime=false;
+
+    public KeyHandler(GamePanel gamePanel){
+        this.gamePanel=gamePanel;
+    }
     @Override
     public void keyTyped(KeyEvent e) {
     }
@@ -16,29 +20,23 @@ public class KeyHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if (code == KeyEvent.VK_RIGHT){
-            rightPressed=true;
-        }
-        if(code == KeyEvent.VK_LEFT){
-            leftPressed=true;
-        }
-        if(code == KeyEvent.VK_UP){
-            upPressed=true;
-        }
-        if(code == KeyEvent.VK_DOWN){
-            downPressed=true;
-        }
-        //DEBUG
-        if(code == KeyEvent.VK_T){
-            if (checkDrawTime==false){
-                checkDrawTime=true;
-            } else if (checkDrawTime==true) {
-                checkDrawTime=false;
-                
+        switch (code) {
+            case KeyEvent.VK_UP -> upPressed = true;
+            case KeyEvent.VK_DOWN -> downPressed = true;
+            case KeyEvent.VK_LEFT -> leftPressed = true;
+            case KeyEvent.VK_RIGHT -> rightPressed = true;
+
+            case KeyEvent.VK_ENTER -> enterPressed = true;
+            case KeyEvent.VK_P -> pPressed = true;
+            case KeyEvent.VK_T -> {
+                if (checkDrawTime==false){
+                    checkDrawTime=true;
+                } else if (checkDrawTime==true) {
+                    checkDrawTime=false;
+
+                }
             }
         }
-
-
     }
 
     @Override
@@ -57,6 +55,9 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_DOWN){
             downPressed=false;
         }
+        if(code == KeyEvent.VK_P){
+            pPressed=false;
+        }
     }
 
     public Boolean getUpPressed(){
@@ -73,5 +74,29 @@ public class KeyHandler implements KeyListener {
 
     public Boolean getRightPressed(){
         return  rightPressed;
+    }
+
+    public boolean isEnterPressed() {
+        return enterPressed;
+    }
+
+    public void setEnterPressed(boolean enterPressed) {
+        this.enterPressed = enterPressed;
+    }
+
+    public boolean ispPressed() {
+        return pPressed;
+    }
+
+    public void setpPressed(boolean pPressed) {
+        this.pPressed = pPressed;
+    }
+
+    public void setUpPressed(boolean upPressed){
+        this.upPressed = upPressed;
+    }
+
+    public void setDownPressed(boolean downPressed){
+        this.downPressed = downPressed;
     }
 }

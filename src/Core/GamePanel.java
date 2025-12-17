@@ -24,25 +24,27 @@ public class GamePanel extends JPanel implements Runnable{
 
     final int FPS = 60;
     Sound sound = new Sound();
-    KeyHandler keyHandler = new KeyHandler();
+    KeyHandler keyHandler = new KeyHandler(this);
     Thread gameThread;
     public CollisionChecker ccheker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
 
     public Player player = new Player(this,keyHandler);
     public SuperObject obj[] = new SuperObject[10];
+
+    GameState gameState;
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth,screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler); //Listen to key user input
         this.setFocusable(true); //Make the panel focus on getting key input
+        this.gameState=new MenuState(this);
     }
     public void setupGame (){
 
         aSetter.setObject();
         playMusic(0);
-
     }
 
     public void startGameThread(){
@@ -73,9 +75,15 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 
-    //function to update information for the scene such as player positions
-    public void update(){
-        player.update();
+    public void setGameState(GameState newState) {
+        this.gameState = newState;
+    }
+
+    public void update() {
+        if (gameState !=null) {
+            gameState.handleInput(keyHandler);
+            gameState.update();
+        }
     }
 
     //function to draw relevant components during the update
@@ -89,22 +97,9 @@ public class GamePanel extends JPanel implements Runnable{
         if(keyHandler.checkDrawTime==true){
             drawStart=System.nanoTime();
         }
-
-
-        // TILE
-        tileM.draw(g2);
-
-        // OBJECT
-        for(int i = 0; i < obj.length; i++) {
-            if (obj[i] != null) {
-                obj[i].draw(g2, this);
-            }
+        if(gameState != null) {
+            gameState.draw(g2);
         }
-
-        // PLAYER
-        player.draw(g2);
-        //UI
-        ui.draw(g2);
         //DEBUG
         if(keyHandler.checkDrawTime==true){
             long drawEnd = System.nanoTime();
