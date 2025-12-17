@@ -4,9 +4,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
-
+    GamePanel gamePanel;
     private boolean upPressed, downPressed, leftPressed, rightPressed;
+    //DEBUG
+    boolean checkDrawTime=false;
 
+    public KeyHandler(GamePanel gamePanel){
+        this.gamePanel=gamePanel;
+    }
     @Override
     public void keyTyped(KeyEvent e) {
     }
@@ -27,6 +32,27 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_DOWN){
             downPressed=true;
         }
+        if(code == KeyEvent.VK_P) {
+            if (gamePanel.gameState instanceof PlayState) {
+                gamePanel.setGameState(new PauseState(gamePanel, gamePanel.gameState));
+            } else if (gamePanel.gameState instanceof PauseState) {
+                gamePanel.setGameState(((PauseState) gamePanel.gameState).getPreviousState());
+            }
+        }
+        if(code == KeyEvent.VK_ENTER && gamePanel.gameState instanceof MenuState){
+            gamePanel.setGameState(new PlayState(gamePanel));
+        }
+        //DEBUG
+        if(code == KeyEvent.VK_T){
+            if (checkDrawTime==false){
+                checkDrawTime=true;
+            } else if (checkDrawTime==true) {
+                checkDrawTime=false;
+                
+            }
+        }
+
+
     }
 
     @Override
