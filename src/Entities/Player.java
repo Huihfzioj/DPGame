@@ -21,7 +21,7 @@ public class Player extends Entity{
     int spriteNumber=1;
     public final int screenx;
     public final int screeny;
-    public int haskey = 0;
+    //public int haskey = 0;
     public Player(GamePanel gamePanel,KeyHandler keyHandler){
         this.gamePanel=gamePanel;
         this.keyHandler=keyHandler;
@@ -137,37 +137,6 @@ public class Player extends Entity{
     }
     public void pickUpObject (int i) {
         if (i != 999){
-            String objectName = gamePanel.obj[i].name;
-
-            switch (objectName) {
-                case "Key":
-                    gamePanel.playSE(1);
-                    haskey++;
-                    gamePanel.obj[i] = null;
-                    gamePanel.ui.showMessage("you got a Memory");
-                    break;
-                case "Door":
-                    gamePanel.playSE(3);
-                    if (haskey > 0) {
-                        gamePanel.obj[i] = null;
-                        haskey--;
-                        gamePanel.ui.showMessage("you opened the door");
-                    }
-                    else {
-                        gamePanel.ui.showMessage("you need a key!");
-                    }
-                    break;
-                case "Boots" :
-                    gamePanel.playSE(2);
-                    this.setSpeed(this.getSpeed() + 2);
-                    gamePanel.obj[i] = null;
-                    break;
-                case "Chest":
-                    gamePanel.ui.gameFinished = true;
-                    gamePanel.stopMusic();
-                    gamePanel.playSE(4);
-                    break;
-            }
         }
     }
 
