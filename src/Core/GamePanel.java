@@ -1,5 +1,10 @@
 package Core;
 
+import Core.Events.DamagePitEvent;
+import Core.Events.HealingPoolEvent;
+import Core.Events.EventHandler;
+import Core.GameStates.GameState;
+import Core.GameStates.MenuState;
 import Core.tile.TileManager;
 import Entities.Player;
 import object.SuperObject;
@@ -16,7 +21,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int maxScreenRow=12;
     public final int screenWidth= tileSize*maxScreenCol;
     public final int screenHeight= tileSize*maxScreenRow;
-    TileManager tileM = new TileManager(this);
+    public TileManager tileM = new TileManager(this);
     public UI ui=new UI(this) ;
   // world settings
     public final int maxWorldCol = 50;
@@ -24,15 +29,16 @@ public class GamePanel extends JPanel implements Runnable{
 
     final int FPS = 60;
     Sound sound = new Sound();
-    KeyHandler keyHandler = new KeyHandler(this);
+    public KeyHandler keyHandler = new KeyHandler(this);
     Thread gameThread;
     public CollisionChecker ccheker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
 
     public Player player = new Player(this,keyHandler);
     public SuperObject obj[] = new SuperObject[10];
+    public EventHandler eventHandler = new EventHandler(this);
 
-    GameState gameState;
+    public GameState gameState;
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth,screenHeight));
         this.setBackground(Color.black);
@@ -40,11 +46,18 @@ public class GamePanel extends JPanel implements Runnable{
         this.addKeyListener(keyHandler); //Listen to key user input
         this.setFocusable(true); //Make the panel focus on getting key input
         this.gameState=new MenuState(this);
+        setUpEvents();
     }
     public void setupGame (){
 
         aSetter.setObject();
         playMusic(0);
+    }
+
+    private void setUpEvents() {
+        // Example of adding multiple events using strategy pattern
+        eventHandler.addEvent(24, 21, new DamagePitEvent());
+        eventHandler.addEvent(23, 21, new HealingPoolEvent());
     }
 
     public void startGameThread(){

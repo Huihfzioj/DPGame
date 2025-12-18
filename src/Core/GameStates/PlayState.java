@@ -1,7 +1,10 @@
-package Core;
+package Core.GameStates;
 
 import java.awt.*;
-import Entities.Player;
+
+import Core.GamePanel;
+import Core.KeyHandler;
+
 public class PlayState implements GameState {
     private GamePanel game;
 

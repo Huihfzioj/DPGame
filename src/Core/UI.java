@@ -6,13 +6,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 
+import Core.GameStates.MenuState;
+import Core.GameStates.PauseState;
+import Core.GameStates.PlayState;
 import object.OBJ_Heart;
-import object.OBJ_Key;
 import object.SuperObject;
 
 import javax.imageio.ImageIO;
-
-import static java.awt.SystemColor.text;
 
 public class UI {
     GamePanel gamePanel;

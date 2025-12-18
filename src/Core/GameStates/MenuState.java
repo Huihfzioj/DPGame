@@ -1,7 +1,9 @@
-package Core;
+package Core.GameStates;
+
+import Core.GamePanel;
+import Core.KeyHandler;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 
 import static java.lang.Math.abs;
 
