@@ -39,17 +39,18 @@ public class EventHandler {
 
         for (EventEntry event : events) {
             if (hit(event.col, event.row)) {
+
                 // If the event is the same as lastTriggeredEvent, respect cooldown
                 if (event.equals(lastTriggeredEvent) && currentTime - lastEventTime < EVENT_COOLDOWN_MS) {
                     return; // Still in cooldown, do nothing
                 }
 
-                // Trigger the event
-                event.action.execute(gamePanel);
-
-                // Update last triggered event and time
-                lastTriggeredEvent = event;
-                lastEventTime = currentTime;
+                // Execute the event and only update cooldown if it actually triggers
+                boolean executed = event.action.execute(gamePanel); // <-- change execute() to return boolean
+                if (executed) {
+                    lastTriggeredEvent = event;
+                    lastEventTime = currentTime;
+                }
                 break; // Only trigger one event per check
             }
         }
