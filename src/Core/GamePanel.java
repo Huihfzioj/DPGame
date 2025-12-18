@@ -1,6 +1,7 @@
 package Core;
 
 import Core.Events.DamagePitEvent;
+import Core.Events.HealingPoolEvent;
 import Core.Events.EventHandler;
 import Core.GameStates.GameState;
 import Core.GameStates.MenuState;
@@ -28,7 +29,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     final int FPS = 60;
     Sound sound = new Sound();
-    KeyHandler keyHandler = new KeyHandler(this);
+    public KeyHandler keyHandler = new KeyHandler(this);
     Thread gameThread;
     public CollisionChecker ccheker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
@@ -56,6 +57,7 @@ public class GamePanel extends JPanel implements Runnable{
     private void setUpEvents() {
         // Example of adding multiple events using strategy pattern
         eventHandler.addEvent(24, 21, new DamagePitEvent());
+        eventHandler.addEvent(23, 21, new HealingPoolEvent());
     }
 
     public void startGameThread(){

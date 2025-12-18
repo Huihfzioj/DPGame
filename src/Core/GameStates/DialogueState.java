@@ -45,7 +45,12 @@ public class DialogueState implements GameState{
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN,32));
         x += GamePanel.tileSize;
         y += GamePanel.tileSize;
-        g2.drawString(gamePanel.ui.message,x,y);
+        String[] lines = gamePanel.ui.message.split("\n"); // split by newline
+
+        for (String line : lines) {
+            g2.drawString(line, x, y);
+            y += g2.getFontMetrics().getHeight(); // move down for next line
+        }
     }
 
     public void drawSubWindow(Graphics2D g2,int x, int y, int width, int height){

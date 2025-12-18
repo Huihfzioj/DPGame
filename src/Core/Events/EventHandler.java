@@ -15,6 +15,7 @@ public class EventHandler {
     private long lastEventTime = 0;
     private final long EVENT_COOLDOWN_MS = 4000;
 
+    private EventEntry lastTriggeredEvent = null;
     private final List<EventEntry> events = new ArrayList<>();
 
     public EventHandler(GamePanel gamePanel) {
@@ -35,11 +36,19 @@ public class EventHandler {
 
     public void checkEvent() {
         long currentTime = System.currentTimeMillis();
-        if (currentTime - lastEventTime < EVENT_COOLDOWN_MS) return;
 
         for (EventEntry event : events) {
             if (hit(event.col, event.row)) {
+                // If the event is the same as lastTriggeredEvent, respect cooldown
+                if (event.equals(lastTriggeredEvent) && currentTime - lastEventTime < EVENT_COOLDOWN_MS) {
+                    return; // Still in cooldown, do nothing
+                }
+
+                // Trigger the event
                 event.action.execute(gamePanel);
+
+                // Update last triggered event and time
+                lastTriggeredEvent = event;
                 lastEventTime = currentTime;
                 break; // Only trigger one event per check
             }
@@ -76,6 +85,13 @@ public class EventHandler {
             this.col = col;
             this.row = row;
             this.action = action;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (!(obj instanceof EventEntry)) return false;
+            EventEntry other = (EventEntry) obj;
+            return this.col == other.col && this.row == other.row && this.action == other.action;
         }
     }
 }
