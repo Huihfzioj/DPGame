@@ -121,6 +121,8 @@ public class Player extends Entity{
             }
         }
 
+        gamePanel.eventHandler.checkEvent();
+
         spriteCounter++;
         if (spriteCounter > 50){
             if (spriteNumber == 1){
