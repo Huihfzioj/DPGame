@@ -3,6 +3,7 @@ package Core;
 import Core.Events.DamagePitEvent;
 import Core.Events.HealingPoolEvent;
 import Core.Events.EventHandler;
+import Core.Events.TeleportingEvent;
 import Core.GameStates.GameState;
 import Core.GameStates.MenuState;
 import Core.tile.TileManager;
@@ -58,6 +59,7 @@ public class GamePanel extends JPanel implements Runnable{
         // Example of adding multiple events using strategy pattern
         eventHandler.addEvent(24, 21, new DamagePitEvent());
         eventHandler.addEvent(23, 21, new HealingPoolEvent());
+        eventHandler.addEvent(20, 21, new TeleportingEvent());
     }
 
     public void startGameThread(){
