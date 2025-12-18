@@ -1,4 +1,6 @@
-package Core;
+package Core.GameStates;
+
+import Core.KeyHandler;
 
 import java.awt.*;
 
