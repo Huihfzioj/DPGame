@@ -3,13 +3,12 @@ package Core.Events;
 import Core.GamePanel;
 import Core.GameStates.DialogueState;
 
-//Concrete Strategy
-public class DamagePitEvent implements EventAction {
-
+public class TeleportingEvent implements EventAction{
     @Override
     public boolean execute(GamePanel game) {
-        game.player.life--;
-        game.ui.message = "You fell into a pit!";
+        game.player.setworldX(GamePanel.tileSize*37);
+        game.player.setworldY(GamePanel.tileSize*10);
+        game.ui.message = "Teleport!";
         game.gameState = new DialogueState(game, game.gameState);
         return true;
     }
