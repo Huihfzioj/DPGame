@@ -154,6 +154,11 @@ public class Player extends Entity{
             }
         }
     }
+    public void DamageEnemie(int i)
+    {  if (i != 999){
+
+    }
+    }
     public void pickUpObject (int i) {
         if (i != 999){
         }

@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Entity {
+    GamePanel gp;
     private int worldx,worldy;
     public int speed;
     private BufferedImage idle,up1,up2,down1,down2,left1,left2,right1,right2;
@@ -19,10 +20,13 @@ public class Entity {
     public int SolidAreaDefaultX, SolidAreaDefaultY;
     public String name;
     //CHARACTER STATUS
+    boolean alive= true;
+    boolean dying = false;
     public int maxLife;
     public int life;
     public boolean invincible = false;
     public int  invincibleCounter = 0;
+    int dyingCounter = 0;
     public int type;
     public Entity(){
 
@@ -84,7 +88,6 @@ public class Entity {
     public void setSpeed(int speed) {
         this.speed = speed;
     }
-
 
 
     // Getter pour direction (celui qui manque)
