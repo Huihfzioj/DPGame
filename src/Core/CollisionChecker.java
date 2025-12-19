@@ -136,4 +136,73 @@ public class CollisionChecker {
 
         return index;
     }
+    public int checkEntity(Entity entity, Entity[] target) {
+
+        int index = 999;
+
+        for (int i = 0; i < target.length; i++) {
+
+            if (target[i] != null) {
+
+                // Get entity's solid area position
+                entity.solidArea.x = entity.getworldX() + entity.solidArea.x;
+                entity.solidArea.y = entity.getworldY() + entity.solidArea.y;
+
+                // Get the object's solid area position
+                target[i].solidArea.x = target[i].getworldX() + target[i].solidArea.x;
+                target[i].solidArea.y = target[i].getworldY() + target[i].solidArea.y;
+
+                switch (entity.getDirection()) {
+                    case UP: entity.solidArea.y -= entity.speed; break;
+                    case DOWN: entity.solidArea.y += entity.speed; break;
+                    case LEFT: entity.solidArea.x -= entity.speed; break;
+                    case RIGHT: entity.solidArea.x += entity.speed; break;
+                }
+
+                if (entity.solidArea.intersects(target[i].solidArea)) {
+                    if (target[i] != entity) {
+                        entity.collisionOn = true;
+                        index = i;
+                    }
+                }
+
+                entity.solidArea.x = entity.getSolidAreaDefaultX();
+                entity.solidArea.y = entity.getSolidAreaDefaultY();
+                target[i].solidArea.x = target[i].SolidAreaDefaultX;
+                target[i].solidArea.y = target[i].SolidAreaDefaultY;
+            }
+        }
+
+        return index;
+    }
+    public boolean checkPlayer(Entity entity) {
+
+        boolean contactPlayer = false;
+
+        // Get entity's solid area position
+        entity.solidArea.x = entity.getworldX() + entity.solidArea.x;
+        entity.solidArea.y = entity.getworldY() + entity.solidArea.y;
+        // Get the object's solid area position
+        gp.player.solidArea.x = gp.player.getworldX() + gp.player.solidArea.x;
+        gp.player.solidArea.y = gp.player.getworldY() + gp.player.solidArea.y;
+
+        switch(entity.getDirection()) {
+            case UP: entity.solidArea.y -= entity.speed; break;
+            case DOWN: entity.solidArea.y += entity.speed; break;
+            case LEFT: entity.solidArea.x -= entity.speed; break;
+            case RIGHT: entity.solidArea.x += entity.speed; break;
+        }
+
+        if(entity.solidArea.intersects(gp.player.solidArea)) {
+            entity.collisionOn = true;
+            contactPlayer = true;
+        }
+
+        entity.solidArea.x = entity.getSolidAreaDefaultX();
+        entity.solidArea.y = entity.getSolidAreaDefaultY();
+        gp.player.solidArea.x = gp.player.SolidAreaDefaultX;
+        gp.player.solidArea.y = gp.player.SolidAreaDefaultY;
+        return contactPlayer;
+    }
+
 }

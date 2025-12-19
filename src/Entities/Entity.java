@@ -21,7 +21,9 @@ public class Entity {
     //CHARACTER STATUS
     public int maxLife;
     public int life;
-
+    public boolean invincible = false;
+    public int  invincibleCounter = 0;
+    public int type;
     public Entity(){
 
     }
@@ -45,7 +47,8 @@ public class Entity {
         return  image;
     }
 
-    public void update(){
+    public void update() {
+
 
     }
 

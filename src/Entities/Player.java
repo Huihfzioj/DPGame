@@ -65,6 +65,7 @@ public class Player extends Entity{
     }
 
     public void update(){
+
         // Utilisation des setters pour mettre à jour la direction dans l'objet Entity
         if (keyHandler.getUpPressed()){
             this.setDirection(Direction.UP);
@@ -85,9 +86,16 @@ public class Player extends Entity{
         // check tile collision
         collisionOn = false;
         gamePanel.ccheker.chektile(this);
+
         // check object collision
         int objectindexe = gamePanel.ccheker.checkObject(this,true);
+
+        // CHECK MONSTER COLLISION - ICI SEULEMENT
+        int enemiesIndex = gamePanel.ccheker.checkEntity(this, gamePanel.enemies);
+        ContactEnemie(enemiesIndex);
+
         pickUpObject(objectindexe);
+
         // if collision is false player can move
         if (collisionOn == false) {
             // Utilisation du getter pour lire la direction
@@ -109,6 +117,15 @@ public class Player extends Entity{
             }
         }
 
+        // DÉPLACER LE COMPTEUR ICI - TOUJOURS ACTIF, PAS SEULEMENT EN CAS DE COLLISION
+        if(invincible == true) {
+            invincibleCounter++;
+            if(invincibleCounter > 60) { // 60 frames = 1 seconde (à 60 FPS)
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
+
         gamePanel.eventHandler.checkEvent();
 
         spriteCounter++;
@@ -122,6 +139,18 @@ public class Player extends Entity{
             // Correction : Reset du spriteCounter après le cycle
             else{
                 spriteCounter = 0;
+            }
+        }
+    }
+
+
+
+    public void ContactEnemie(int i) {
+        if(i != 999) {
+            if(invincible == false) {
+                life -= 1;
+                invincible = true;
+                invincibleCounter = 0; // Réinitialiser le compteur
             }
         }
     }
@@ -170,7 +199,19 @@ public class Player extends Entity{
             default:
                 image=idle;
         }
+        if(invincible == true) {
+            graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        }
+
         graphics2D.drawImage(image,screenx,screeny,null);
+
+      // Reset alpha
+        graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+       // graphics2D.drawImage(image,screenx,screeny,null);
+        // DEBUG
+       // graphics2D.setFont(new Font("Arial", Font.PLAIN, 26));
+       // graphics2D.setColor(Color.white);
+       // graphics2D.drawString("Invincible:" + invincibleCounter, 10, 400);
     }
 
 }
