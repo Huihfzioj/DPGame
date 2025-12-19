@@ -97,7 +97,7 @@ public class Player extends Entity{
         pickUpObject(objectindexe);
 
         // if collision is false player can move
-        if (collisionOn == false) {
+        if (!collisionOn) {
             // Utilisation du getter pour lire la direction
             switch(this.getDirection()) {
                 case UP:
@@ -118,7 +118,7 @@ public class Player extends Entity{
         }
 
         // DÉPLACER LE COMPTEUR ICI - TOUJOURS ACTIF, PAS SEULEMENT EN CAS DE COLLISION
-        if(invincible == true) {
+        if(invincible) {
             invincibleCounter++;
             if(invincibleCounter > 60) { // 60 frames = 1 seconde (à 60 FPS)
                 invincible = false;
@@ -147,7 +147,7 @@ public class Player extends Entity{
 
     public void ContactEnemie(int i) {
         if(i != 999) {
-            if(invincible == false) {
+            if(!invincible) {
                 life -= 1;
                 invincible = true;
                 invincibleCounter = 0; // Réinitialiser le compteur
@@ -204,7 +204,7 @@ public class Player extends Entity{
             default:
                 image=idle;
         }
-        if(invincible == true) {
+        if(invincible) {
             graphics2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
         }
 

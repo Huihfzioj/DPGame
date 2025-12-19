@@ -10,13 +10,13 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-public class RegularGrim extends Entity {
+public class SkeletonLord extends Entity {
     GamePanel gamePanel;
     int actionLockCounter = 0;
-    public RegularGrim(GamePanel gamePanel){
+    public SkeletonLord(GamePanel gamePanel){
         this.gamePanel=gamePanel;
 
-        name = "Grim Reaper";
+        name = "Skeleton Lord";
         speed = 1;
         maxLife = 4;
         life = maxLife;
@@ -28,6 +28,9 @@ public class RegularGrim extends Entity {
         solidArea.height = 30;
         setSolidAreaDefaultX(solidArea.x);
         setSolidAreaDefaultY(solidArea.y);
+        setworldX(GamePanel.tileSize * 23);
+        setworldY(GamePanel.tileSize * 21);
+
 
         getImages();
     }
@@ -37,7 +40,7 @@ public class RegularGrim extends Entity {
         UtilityTool uTool = new UtilityTool();
         BufferedImage image = null ;
         try{
-            image = ImageIO.read(getClass().getResourceAsStream("/Enemies/Grim Reaper/"+imageName+".png"));
+            image = ImageIO.read(getClass().getResourceAsStream("/Enemies/Skeleton Lord/"+imageName+".png"));
             image = uTool.scaleImage(image, GamePanel.tileSize,GamePanel.tileSize);
 
         }catch (Exception e){
@@ -47,15 +50,15 @@ public class RegularGrim extends Entity {
     }
 
     public void getImages(){
-        setIdle(setup("grim_idle"));
-        setUp1(setup("grim_up"));
-        setUp2(setup("grim_up"));
-        setDown1(setup("grim_idle"));
-        setDown2(setup("grim_idle"));
-        setLeft1(setup("grim_left"));
-        setRight1(setup("grim_right"));
-        setLeft2(setup("grim_left (1)"));
-        setRight2(setup("grim_right (1)"));
+        setIdle(setup("skeletonlord_up_1"));
+        setUp1(setup("skeletonlord_up_1"));
+        setUp2(setup("skeletonlord_up_2"));
+        setDown1(setup("skeletonlord_down_1"));
+        setDown2(setup("skeletonlord_down_2"));
+        setLeft1(setup("skeletonlord_left_1"));
+        setRight1(setup("skeletonlord_right_1"));
+        setLeft2(setup("skeletonlord_left_2"));
+        setRight2(setup("skeletonlord_right_2"));
     }
 
     public void setAction(){
@@ -97,18 +100,32 @@ public class RegularGrim extends Entity {
                 case RIGHT -> setworldX(getworldX() + speed);
             }
         }
+
+        spriteCounter++;
+        if (spriteCounter > 20) { // faster than player = more aggressive feel
+            spriteNum = (spriteNum == 1) ? 2 : 1;
+            spriteCounter = 0;
+        }
     }
 
     @Override
     public void draw(Graphics2D g2) {
 
-        BufferedImage image;
+        BufferedImage image = null;
 
         switch (getDirection()) {
-            case UP -> image = getUp1();
-            case DOWN -> image = getDown1();
-            case LEFT -> image = getLeft1();
-            case RIGHT -> image = getRight1();
+            case UP -> {
+                image = (spriteNum == 1) ? getUp1() : getUp2();
+            }
+            case DOWN -> {
+                image = (spriteNum == 1) ? getDown1() : getDown2();
+            }
+            case LEFT -> {
+                image = (spriteNum == 1) ? getLeft1() : getLeft2();
+            }
+            case RIGHT -> {
+                image = (spriteNum == 1) ? getRight1() : getRight2();
+            }
             default -> image = getIdle();
         }
 
@@ -117,4 +134,5 @@ public class RegularGrim extends Entity {
 
         g2.drawImage(image, screenX, screenY, null);
     }
+
 }

@@ -1,6 +1,9 @@
 package Core;
 
+import Core.Enemies.EnemyFactory;
 import Core.Enemies.RegularGrim;
+import Core.Enemies.RegularGrimFactory;
+import Core.Enemies.SkeletonFactory;
 import object.OBJ_Boots;
 import object.OBJ_Chest;
 import object.OBJ_Door;
@@ -14,12 +17,12 @@ public class AssetSetter {
     public void setObject() {
     }
     public void setEnemy(){
-        gp.enemies[0] = new RegularGrim(gp);
-        gp.enemies[0].setworldX(GamePanel.tileSize*23);
-        gp.enemies[0].setworldY(GamePanel.tileSize*20);
+        EnemyFactory grimFactory = new RegularGrimFactory();
+        gp.enemies[0] = grimFactory.createEnemy(gp);
+        gp.enemies[0].setworldX(GamePanel.tileSize * 23);
+        gp.enemies[0].setworldY(GamePanel.tileSize * 20);
 
-        gp.enemies[1] = new RegularGrim(gp);
-        gp.enemies[1].setworldX(GamePanel.tileSize*23);
-        gp.enemies[1].setworldY(GamePanel.tileSize*24);
+        EnemyFactory skeletonFactory = new SkeletonFactory();
+        gp.enemies[1] = skeletonFactory.createEnemy(gp);
     }
 }
