@@ -1,11 +1,15 @@
 package Entities;
 
+import Core.GamePanel;
+import Core.UtilityTool;
+
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Entity {
     private int worldx,worldy;
-    private int speed;
+    public int speed;
     private BufferedImage idle,up1,up2,down1,down2,left1,left2,right1,right2;
     private Direction direction;
     public int spriteCounter = 0;
@@ -13,7 +17,7 @@ public class Entity {
     public Rectangle solidArea ;
     public boolean collisionOn = false ;
     public int SolidAreaDefaultX, SolidAreaDefaultY;
-
+    public String name;
     //CHARACTER STATUS
     public int maxLife;
     public int life;
@@ -28,6 +32,26 @@ public class Entity {
         this.speed = speed;
     }
 
+    public BufferedImage setup(String imageName){
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null ;
+        try{
+            image = ImageIO.read(getClass().getResourceAsStream("/Player/"+imageName+".png"));
+            image = uTool.scaleImage(image, GamePanel.tileSize,GamePanel.tileSize);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  image;
+    }
+
+    public void update(){
+
+    }
+
+    public void draw(Graphics2D graphics2D){
+
+    }
     // Getter for x
     public int getworldX() {
         return worldx;

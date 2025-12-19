@@ -7,17 +7,19 @@ import Core.Events.TeleportingEvent;
 import Core.GameStates.GameState;
 import Core.GameStates.MenuState;
 import Core.tile.TileManager;
+import Entities.Entity;
 import Entities.Player;
 import object.SuperObject;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable{
 
     public final static int originalTileSize=16; //default size of mc and npc in the game
     public final static int scale=3;
-    public final static int tileSize=originalTileSize*scale; //64*64 tile
+    public final static int tileSize=originalTileSize*scale; //48*48 tile
     public final int maxScreenCol=16;
     public final int maxScreenRow=12;
     public final int screenWidth= tileSize*maxScreenCol;
@@ -40,6 +42,8 @@ public class GamePanel extends JPanel implements Runnable{
     public EventHandler eventHandler = new EventHandler(this);
 
     public GameState gameState;
+    public Entity[] enemies = new Entity[20];
+
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth,screenHeight));
         this.setBackground(Color.black);
@@ -52,6 +56,7 @@ public class GamePanel extends JPanel implements Runnable{
     public void setupGame (){
 
         aSetter.setObject();
+        aSetter.setEnemy();
         playMusic(0);
     }
 
@@ -59,7 +64,7 @@ public class GamePanel extends JPanel implements Runnable{
         // Example of adding multiple events using strategy pattern
         eventHandler.addEvent(24, 21, new DamagePitEvent());
         eventHandler.addEvent(23, 21, new HealingPoolEvent());
-        eventHandler.addEvent(20, 21, new TeleportingEvent());
+        //eventHandler.addEvent(20, 21, new TeleportingEvent());
     }
 
     public void startGameThread(){
@@ -98,6 +103,11 @@ public class GamePanel extends JPanel implements Runnable{
         if (gameState !=null) {
             gameState.handleInput(keyHandler);
             gameState.update();
+        }
+        for (int i = 0; i < enemies.length; i++){
+            if (enemies[i] != null){
+                enemies[i].update();
+            }
         }
     }
 

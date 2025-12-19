@@ -4,6 +4,7 @@ import java.awt.*;
 
 import Core.GamePanel;
 import Core.KeyHandler;
+import Entities.Entity;
 
 public class PlayState implements GameState {
     private GamePanel game;
@@ -25,6 +26,12 @@ public class PlayState implements GameState {
         for (int i = 0; i < game.obj.length; i++) {
             if (game.obj[i] != null) {
                 game.obj[i].draw(g2, game);
+            }
+        }
+
+        for (Entity enemy : game.enemies) {
+            if (enemy != null) {
+                enemy.draw(g2);
             }
         }
 
