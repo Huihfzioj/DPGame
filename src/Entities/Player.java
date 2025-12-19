@@ -63,18 +63,6 @@ public class Player extends Entity{
         down1 = setup("Ghost_down (1)");
 
     }
-    public BufferedImage setup(String imageName){
-        UtilityTool uTool = new UtilityTool();
-        BufferedImage image = null ;
-        try{
-            image = ImageIO.read(getClass().getResourceAsStream("/Player/"+imageName+".png"));
-            image = uTool.scaleImage(image,gamePanel.tileSize,gamePanel.tileSize);
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return  image;
-    }
 
     public void update(){
         // Utilisation des setters pour mettre à jour la direction dans l'objet Entity
