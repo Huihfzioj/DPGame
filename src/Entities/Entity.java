@@ -7,7 +7,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Entity {
+public abstract class Entity {
     private int worldx,worldy;
     public int speed;
     private BufferedImage idle,up1,up2,down1,down2,left1,left2,right1,right2;
@@ -47,14 +47,9 @@ public class Entity {
         return  image;
     }
 
-    public void update() {
+    public abstract void update();
+    public abstract void draw(Graphics2D g2);
 
-
-    }
-
-    public void draw(Graphics2D graphics2D){
-
-    }
     // Getter for x
     public int getworldX() {
         return worldx;
