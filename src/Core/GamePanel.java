@@ -14,6 +14,8 @@ import object.SuperObject;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import static Core.GameLogger.LOGGER;
+
 
 public class GamePanel extends JPanel implements Runnable{
 
@@ -51,10 +53,13 @@ public class GamePanel extends JPanel implements Runnable{
         this.addKeyListener(keyHandler); //Listen to key user input
         this.setFocusable(true); //Make the panel focus on getting key input
         this.gameState=new MenuState(this);
+        LOGGER.info("Game started"); // ✅ LOG DEMANDÉ
+        LOGGER.info("[STATE] Game: null -> MENU");
+
         setUpEvents();
     }
     public void setupGame (){
-
+        LOGGER.info("Setting up game objects and enemies");
         aSetter.setObject();
         aSetter.setEnemy();
         playMusic(0);
@@ -68,6 +73,7 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void startGameThread(){
+        LOGGER.info("Game loop started");
         gameThread=new Thread(this);
         gameThread.start();
     }
@@ -95,9 +101,18 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 
+
     public void setGameState(GameState newState) {
+        if (this.gameState != null && newState != null) {
+            LOGGER.info("[STATE] Game: "
+                    + this.gameState.getClass().getSimpleName().replace("State","").toUpperCase()
+                    + " -> "
+                    + newState.getClass().getSimpleName().replace("State","").toUpperCase());
+        }
         this.gameState = newState;
     }
+
+
 
     public void update() {
         if (gameState !=null) {

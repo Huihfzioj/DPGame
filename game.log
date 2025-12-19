@@ -1,0 +1,5 @@
+[2025-12-20 00:50:40] [INFO] Game started
+[2025-12-20 00:50:40] [INFO] [STATE] Game: null -> MENU
+[2025-12-20 00:50:40] [INFO] Setting up game objects and enemies
+[2025-12-20 00:50:40] [INFO] Game loop started
+[2025-12-20 00:50:44] [INFO] [STATE] Game: MENU -> PLAY
