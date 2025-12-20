@@ -143,8 +143,12 @@ public class SkeletonLord extends Entity {
         if (invincible){
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.4f));
         }
-
+        if (isDying()){
+            dyingAnimation(g2);
+        }
         g2.drawImage(image, screenX, screenY, null);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1f));
     }
+
+
 }

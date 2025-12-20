@@ -214,7 +214,7 @@ public class Player extends Entity{
                 gamePanel.enemies[enemyIndex].invincible = true;
 
                 if (gamePanel.enemies[enemyIndex].life <= 0){
-                    gamePanel.enemies[enemyIndex]=null;
+                    gamePanel.enemies[enemyIndex].dying = true;
                 }
             }
         }

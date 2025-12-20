@@ -1,5 +1,15 @@
-[2025-12-20 00:50:40] [INFO] Game started
-[2025-12-20 00:50:40] [INFO] [STATE] Game: null -> MENU
-[2025-12-20 00:50:40] [INFO] Setting up game objects and enemies
-[2025-12-20 00:50:40] [INFO] Game loop started
-[2025-12-20 00:50:44] [INFO] [STATE] Game: MENU -> PLAY
+[2025-12-20 09:56:03] [INFO] Game started
+[2025-12-20 09:56:03] [INFO] [STATE] Game: null -> MENU
+[2025-12-20 09:56:03] [INFO] Setting up game objects and enemies
+[2025-12-20 09:56:03] [INFO] Game loop started
+[2025-12-20 09:56:05] [INFO] [STATE] Game: MENU -> PLAY
+[2025-12-20 09:58:12] [INFO] Game started
+[2025-12-20 09:58:12] [INFO] [STATE] Game: null -> MENU
+[2025-12-20 09:58:12] [INFO] Setting up game objects and enemies
+[2025-12-20 09:58:13] [INFO] Game loop started
+[2025-12-20 09:58:13] [INFO] [STATE] Game: MENU -> PLAY
+[2025-12-20 09:58:54] [INFO] Game started
+[2025-12-20 09:58:54] [INFO] [STATE] Game: null -> MENU
+[2025-12-20 09:58:54] [INFO] Setting up game objects and enemies
+[2025-12-20 09:58:54] [INFO] Game loop started
+[2025-12-20 09:58:55] [INFO] [STATE] Game: MENU -> PLAY

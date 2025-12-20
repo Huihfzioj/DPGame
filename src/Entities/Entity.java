@@ -27,7 +27,9 @@ public class Entity {
     public int type;
     boolean attacking = false;
     public Rectangle attackArea = new Rectangle(0,0,0,0);
-
+    boolean alive = true;
+    boolean dying = false;
+    public int dyingCounter = 0;
     public Entity(){
 
     }
@@ -58,6 +60,36 @@ public class Entity {
 
     public void draw(Graphics2D graphics2D){
 
+    }
+    public void dyingAnimation(Graphics2D g2) {
+        dyingCounter++;
+
+        int i=5;
+
+        if (dyingCounter <= i ){
+            changeAlpha(g2,0.f);
+        }
+        if (dyingCounter > i && dyingCounter <=i*2){
+            changeAlpha(g2,1.f);        }
+        if (dyingCounter > i*2 && dyingCounter <=i*3){
+            changeAlpha(g2,0.f);        }
+        if (dyingCounter > i*3 && dyingCounter <=i*4){
+            changeAlpha(g2,1.f);        }
+        if (dyingCounter > i*4 && dyingCounter <=i*5){
+            changeAlpha(g2,0.f);        }
+        if (dyingCounter > i*5 && dyingCounter <=i*6){
+            changeAlpha(g2,1.f);        }
+        if (dyingCounter > i*6 && dyingCounter <=i*7){
+            changeAlpha(g2,0.f);        }
+        if (dyingCounter > i*7 && dyingCounter <=i*8){
+            changeAlpha(g2,1.f);        }
+        if (dyingCounter > i*8){
+            dying = false;
+            alive = false;
+        }
+    }
+    public void changeAlpha(Graphics2D g2, float alphaValue){
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,alphaValue));
     }
     // Getter for x
     public int getworldX() {
@@ -224,4 +256,11 @@ public class Entity {
         SolidAreaDefaultY = solidAreaDefaultY;
     }
 
+    public boolean isDying(){ return dying;}
+
+    public void setDying(boolean dying ){ this.dying = dying;}
+
+    public boolean isAlive(){ return alive;}
+
+    public void setAlive(boolean alive ){ this.alive = alive;}
 }
