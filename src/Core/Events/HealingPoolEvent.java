@@ -13,7 +13,7 @@ public class HealingPoolEvent implements EventAction{
         game.ui.message = "You are standing on a healing pool. \nYour life has been recovered!";
         game.gameState = new DialogueState(game, game.gameState);
         game.player.life = game.player.maxLife;
-
+        game.aSetter.setEnemy();
         game.keyHandler.setEnterPressed(false);
         return true; // Successfully executed
     }

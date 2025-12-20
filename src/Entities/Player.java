@@ -1,6 +1,9 @@
 package Entities;
 
 import Core.GamePanel;
+import Core.GameStates.CharacterState;
+import Core.GameStates.DialogueState;
+import Core.GameStates.GameState;
 import Core.KeyHandler;
 import Core.UI;
 import Core.UtilityTool;
@@ -229,13 +232,38 @@ public class Player extends Entity{
         if (enemyIndex != 999){
             if (!gamePanel.enemies[enemyIndex].invincible){
                 gamePanel.playSE(5);
-                gamePanel.enemies[enemyIndex].life -=1;
+                int damage = attack - gamePanel.enemies[enemyIndex].defense;
+                if (damage < 0){
+                    damage = 0;
+                }
+                gamePanel.enemies[enemyIndex].life -= damage;
+                gamePanel.ui.addMessage(damage + " damage !");
                 gamePanel.enemies[enemyIndex].invincible = true;
                 gamePanel.enemies[enemyIndex].damageReaction(gamePanel);
                 if (gamePanel.enemies[enemyIndex].life <= 0){
                     gamePanel.enemies[enemyIndex].dying = true;
+                    gamePanel.ui.addMessage("Killed the "+ gamePanel.enemies[enemyIndex].name+"!");
+                    gamePanel.ui.addMessage( "Exp "+ gamePanel.enemies[enemyIndex].exp+"!");
+                    exp += gamePanel.enemies[enemyIndex].exp;
+                    checkLevelUp();
                 }
             }
+        }
+    }
+
+    private void checkLevelUp() {
+        if (exp >= nextLevelExp){
+            level++;
+            nextLevelExp *=2;
+            maxLife += 2;
+            strength++;
+            dexterity++;
+            attack = getAttack();
+            defense = getDefense();
+            gamePanel.playSE(7);
+            GameState previous = gamePanel.gameState;
+            gamePanel.ui.message = "You are level " + level + " now!\n";
+            gamePanel.setGameState(new DialogueState(gamePanel,previous));
         }
     }
 
@@ -251,7 +279,11 @@ public class Player extends Entity{
 
             if (!invincible) {
                 gamePanel.playSE(6);
-                life -= 1;
+                int damage = gamePanel.enemies[i].attack - defense;
+                if (damage < 0){
+                    damage = 0;
+                }
+                life -= damage;
                 invincible = true;
                 invincibleCounter = 0;
             }

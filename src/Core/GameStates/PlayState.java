@@ -45,9 +45,31 @@ public class PlayState implements GameState {
             }
         }
 
-
+        drawMessages(g2);
         game.player.draw(g2);
         game.ui.draw(g2);           // affiche UI spécifique au gameplay
+    }
+
+    private void drawMessages(Graphics2D g2) {
+        int messageX = GamePanel.tileSize;
+        int messageY = GamePanel.tileSize * 4;
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD,25F));
+        for (int i=0; i < game.ui.messages.size(); i++){
+            if ( game.ui.messages.get(i) != null){
+                g2.setColor(Color.black);
+                g2.drawString(game.ui.messages.get(i), messageX + 2, messageY + 2);
+                g2.setColor(Color.white);
+                g2.drawString(game.ui.messages.get(i), messageX, messageY);
+                int counter = game.ui.messageCounter.get(i) + 1;
+                game.ui.messageCounter.set(i,counter);
+                messageY += 50;
+
+                if (game.ui.messageCounter.get(i) > 180){
+                    game.ui.messages.remove(i);
+                    game.ui.messageCounter.remove(i);
+                }
+            }
+        }
     }
 
     @Override

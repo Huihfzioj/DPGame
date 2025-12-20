@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import Core.GameStates.MenuState;
 import Core.GameStates.PauseState;
@@ -21,7 +22,8 @@ public class UI {
     //BufferedImage keyImage;
     public boolean messageOn = false ;
     public String message = "";
-    int messageCounter=0;
+    public ArrayList<String> messages = new ArrayList<>();
+    public ArrayList<Integer> messageCounter = new ArrayList<>();
     public boolean gameFinished = false;
     double playTime;
     DecimalFormat dformat = new DecimalFormat("#0.00");
@@ -50,9 +52,9 @@ public class UI {
 
     }
 
-    public void showMessage(String text) {
-        message = text;
-        messageOn=true;
+    public void addMessage(String text) {
+        messages.add(text);
+        messageCounter.add(0);
     }
     //afficher du texte
     public void draw(Graphics2D g2d) {
