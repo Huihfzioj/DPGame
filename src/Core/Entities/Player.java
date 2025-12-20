@@ -4,11 +4,13 @@ import Core.GamePanel;
 import Core.GameStates.DialogueState;
 import Core.GameStates.GameState;
 import Core.KeyHandler;
+import object.OBJ_Key;
 import object.OBJ_Shield;
 import object.OBJ_Sword;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Player extends Entity{
     GamePanel gamePanel;
@@ -20,6 +22,10 @@ public class Player extends Entity{
     public final int screenx;
     public final int screeny;
     //public int haskey = 0;
+
+    public ArrayList<Entity> inventory = new ArrayList<>();
+    public final int maxInventorySize = 20;
+
     public Player(GamePanel gamePanel,KeyHandler keyHandler){
         this.gamePanel=gamePanel;
         this.keyHandler=keyHandler;
@@ -39,6 +45,7 @@ public class Player extends Entity{
         setDefaultValues();
         getPlayerImage();
         getPlayerAttackImage();
+        setItems();
     }
 
     public void setDefaultValues(){
@@ -62,6 +69,16 @@ public class Player extends Entity{
         defense = getDefense();
     }
 
+    public void setItems(){
+        inventory.add(currentWeapon);
+        inventory.add(currentShield);
+        inventory.add(currentWeapon);
+        inventory.add(currentShield);
+        inventory.add(currentWeapon);
+        inventory.add(currentShield);
+        inventory.add(currentWeapon);
+        inventory.add(currentShield);
+    }
     public int getAttack() {
         return strength * currentWeapon.attackValue;
     }

@@ -15,6 +15,7 @@ public class OBJ_Sword extends Entity {
         name = "Normal Sword";
         setDown1(setup("sword_normal"));
         attackValue = 1;
+        description = "["+ name +"]\n"+"An old wooden sword";
     }
 
     @Override

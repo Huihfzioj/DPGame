@@ -78,9 +78,9 @@ public class GameOver implements GameState{
         }
         if (keyHandler.isEnterPressed()){
             if (gamePanel.ui.uiMenuIndex == 0){
-                gamePanel.player = new Player(gamePanel, gamePanel.keyHandler);
-                gamePanel.setupGame();
-                gamePanel.setGameState(new PlayState(gamePanel));
+                //gamePanel.player = new Player(gamePanel, gamePanel.keyHandler);
+                //gamePanel.setupGame();
+                //gamePanel.setGameState(new PlayState(gamePanel));
             }
             else if (gamePanel.ui.uiMenuIndex == 1){
                 gamePanel.setGameState(new MenuState(gamePanel));

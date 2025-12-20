@@ -16,6 +16,7 @@ public class OBJ_Shield extends Entity {
         name = "Wood Shield";
         setDown1(setup("shield_wood"));
         defenseValue = 1;
+        description = "["+ name +"]\n"+"A wooden shield";
     }
 
     @Override
