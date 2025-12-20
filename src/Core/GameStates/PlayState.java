@@ -15,6 +15,16 @@ public class PlayState implements GameState {
 
     @Override
     public void update() {
+        for (int i = 0; i < game.enemies.length; i++){
+            if (game.enemies[i] != null ){
+                if (game.enemies[i].isAlive() && !game.enemies[i].isDying()){
+                    game.enemies[i].update();
+                }
+                if (!game.enemies[i].isAlive()){
+                    game.enemies[i] = null;
+                }
+            }
+        }
         game.player.update();       // délégué au player
         // objets, collisions, etc.
     }
@@ -35,6 +45,7 @@ public class PlayState implements GameState {
             }
         }
 
+
         game.player.draw(g2);
         game.ui.draw(g2);           // affiche UI spécifique au gameplay
     }
@@ -44,6 +55,10 @@ public class PlayState implements GameState {
         if (keyHandler.ispPressed()) {
             game.setGameState(new PauseState(game,this));
             keyHandler.setpPressed(false);
+        }
+        if (keyHandler.iscPressed()){
+            game.setGameState(new CharacterState(game,this));
+            keyHandler.setcPressed(false);
         }
     }
 }

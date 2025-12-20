@@ -119,16 +119,6 @@ public class GamePanel extends JPanel implements Runnable{
             gameState.handleInput(keyHandler);
             gameState.update();
         }
-        for (int i = 0; i < enemies.length; i++){
-            if (enemies[i] != null ){
-                if (enemies[i].isAlive() && !enemies[i].isDying()){
-                    enemies[i].update();
-                }
-                if (!enemies[i].isAlive()){
-                    enemies[i] = null;
-                }
-            }
-        }
     }
 
     //function to draw relevant components during the update
