@@ -1,21 +1,14 @@
-package Entities;
+package Core.Entities;
 
 import Core.GamePanel;
-import Core.GameStates.CharacterState;
 import Core.GameStates.DialogueState;
 import Core.GameStates.GameState;
 import Core.KeyHandler;
-import Core.UI;
-import Core.UtilityTool;
 import object.OBJ_Shield;
 import object.OBJ_Sword;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import static Core.GamePanel.tileSize;
 
 public class Player extends Entity{
     GamePanel gamePanel;

@@ -59,6 +59,9 @@ public class KeyHandler implements KeyListener {
         if(code == KeyEvent.VK_P){
             pPressed=false;
         }
+        if(code == KeyEvent.VK_ENTER){
+            enterPressed=false;
+        }
     }
 
     public Boolean getUpPressed(){

@@ -2,7 +2,7 @@ package object;
 
 import Core.GamePanel;
 import Core.UtilityTool;
-import Entities.Entity;
+import Core.Entities.Entity;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

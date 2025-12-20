@@ -1,4 +1,4 @@
-package Entities;
+package Core.Entities;
 
 import Core.Enemies.RegularGrim;
 import Core.Enemies.SkeletonLord;

@@ -1,7 +1,7 @@
 package Core.Enemies;
 
 import Core.GamePanel;
-import Entities.Entity;
+import Core.Entities.Entity;
 
 public class SkeletonFactory implements EnemyFactory{
 
