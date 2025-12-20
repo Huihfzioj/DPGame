@@ -91,7 +91,7 @@ public class Player extends Entity{
             attacking();
         }
 
-        // 2️⃣ ALWAYS read movement input
+        // ALWAYS read movement input
         if (keyHandler.getUpPressed()){
             setDirection(Direction.UP);
         }
@@ -209,12 +209,12 @@ public class Player extends Entity{
     private void damageEnemy(int enemyIndex) {
         if (enemyIndex != 999){
             if (!gamePanel.enemies[enemyIndex].invincible){
-
+                gamePanel.playSE(5);
                 gamePanel.enemies[enemyIndex].life -=1;
                 gamePanel.enemies[enemyIndex].invincible = true;
-
+                gamePanel.enemies[enemyIndex].damageReaction(gamePanel);
                 if (gamePanel.enemies[enemyIndex].life <= 0){
-                    gamePanel.enemies[enemyIndex]=null;
+                    gamePanel.enemies[enemyIndex].dying = true;
                 }
             }
         }
@@ -231,6 +231,7 @@ public class Player extends Entity{
             }
 
             if (!invincible) {
+                gamePanel.playSE(6);
                 life -= 1;
                 invincible = true;
                 invincibleCounter = 0;
