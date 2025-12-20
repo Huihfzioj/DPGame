@@ -1,5 +1,7 @@
 package Entities;
 
+import Core.Enemies.RegularGrim;
+import Core.Enemies.SkeletonLord;
 import Core.GamePanel;
 import Core.UtilityTool;
 
@@ -7,8 +9,9 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Entity {
+public abstract class Entity {
     private int worldx,worldy;
+    public int screenX,screenY;
     public int speed;
     private BufferedImage idle,up1,up2,down1,down2,left1,left2,right1,right2;
     BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
@@ -30,6 +33,9 @@ public class Entity {
     boolean alive = true;
     boolean dying = false;
     public int dyingCounter = 0;
+    public boolean hpBar = false;
+    public int hpBarCounter = 0;
+    public int actionLockCounter;
     public Entity(){
 
     }
@@ -53,13 +59,29 @@ public class Entity {
         return  image;
     }
 
-    public void update() {
-
-
-    }
+    public abstract void update();
 
     public void draw(Graphics2D graphics2D){
 
+        if ((this instanceof RegularGrim || this instanceof SkeletonLord) && hpBar){
+            double oneScale = (double) GamePanel.tileSize / maxLife;
+            double hpBarValue = oneScale * life;
+            graphics2D.setColor(new Color(35,35,35));
+            graphics2D.fillRect(screenX-1,screenY-16,GamePanel.tileSize+2,12);
+            graphics2D.setColor(new Color(255,0,30));
+            graphics2D.fillRect(screenX,screenY-15,(int) hpBarValue,10);
+
+            hpBarCounter++;
+
+            if (hpBarCounter > 600){
+                hpBarCounter = 0;
+                hpBar = false;
+            }
+        }
+    }
+    public void damageReaction(GamePanel gamePanel){
+        actionLockCounter = 0;
+        setDirection(gamePanel.player.getDirection());
     }
     public void dyingAnimation(Graphics2D g2) {
         dyingCounter++;

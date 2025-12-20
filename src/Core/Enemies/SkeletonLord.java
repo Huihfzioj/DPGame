@@ -116,7 +116,6 @@ public class SkeletonLord extends Entity {
         }
     }
 
-    @Override
     public void draw(Graphics2D g2) {
 
         BufferedImage image = null;
@@ -137,17 +136,19 @@ public class SkeletonLord extends Entity {
             default -> image = getIdle();
         }
 
-        int screenX = getworldX() - gamePanel.player.getworldX() + gamePanel.player.screenx;
-        int screenY = getworldY() - gamePanel.player.getworldY() + gamePanel.player.screeny;
-
+        screenX = getworldX() - gamePanel.player.getworldX() + gamePanel.player.screenx;
+        screenY = getworldY() - gamePanel.player.getworldY() + gamePanel.player.screeny;
+        super.draw(g2);
         if (invincible){
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.4f));
+            hpBar = true;
+            hpBarCounter = 0;
+            changeAlpha(g2,0.4f);
         }
         if (isDying()){
             dyingAnimation(g2);
         }
         g2.drawImage(image, screenX, screenY, null);
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1f));
+        changeAlpha(g2,1f);
     }
 
 
