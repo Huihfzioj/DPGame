@@ -36,6 +36,20 @@ public abstract class Entity {
     public boolean hpBar = false;
     public int hpBarCounter = 0;
     public int actionLockCounter;
+    public int level;
+    public int strength;
+    public int dexterity;
+    public int attack;
+    public int defense;
+    public int exp;
+    public int nextLevelExp;
+    public int memoryFragments;
+    public Entity currentWeapon;
+    public Entity currentShield;
+
+    // Item Attributes
+    public int attackValue;
+    public int defenseValue;
     public Entity(){
 
     }

@@ -40,7 +40,7 @@ public class DialogueState implements GameState{
         int width = gamePanel.screenWidth - (GamePanel.tileSize*4);
         int height = GamePanel.tileSize*5;
 
-        drawSubWindow(g2,x,y,width,height);
+        gamePanel.ui.drawSubWindow(g2,x,y,width,height);
 
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN,32));
         x += GamePanel.tileSize;
@@ -51,16 +51,5 @@ public class DialogueState implements GameState{
             g2.drawString(line, x, y);
             y += g2.getFontMetrics().getHeight(); // move down for next line
         }
-    }
-
-    public void drawSubWindow(Graphics2D g2,int x, int y, int width, int height){
-        Color c = new Color(0,0,0,220);
-        g2.setColor(c);
-        g2.fillRoundRect(x,y,width,height,35,35);
-
-        c = new Color(255,255,255);
-        g2.setColor(c);
-        g2.setStroke(new BasicStroke(5));
-        g2.drawRoundRect(x+5,y+5,width-10,height-10,25,25);
     }
 }

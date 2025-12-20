@@ -4,6 +4,8 @@ import Core.GamePanel;
 import Core.KeyHandler;
 import Core.UI;
 import Core.UtilityTool;
+import object.OBJ_Shield;
+import object.OBJ_Sword;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -52,6 +54,23 @@ public class Player extends Entity{
         //PLAYER STATUS
         maxLife =6;
         life=maxLife;
+        level = 1;
+        strength = 1; // The more strength the player has the more damage he inflicts
+        dexterity = 1; // The more dexterity the player has the less damage he receives
+        exp = 0;
+        nextLevelExp = 5;
+        memoryFragments = 0;
+        currentWeapon = new OBJ_Sword(gamePanel);
+        currentShield = new OBJ_Shield(gamePanel);
+        attack = getAttack();
+        defense = getDefense();
+    }
+
+    public int getAttack() {
+        return strength * currentWeapon.attackValue;
+    }
+    public int getDefense() {
+        return dexterity * currentShield.defenseValue;
     }
 
     public void getPlayerImage(){
