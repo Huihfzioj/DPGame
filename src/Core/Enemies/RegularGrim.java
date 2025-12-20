@@ -97,6 +97,13 @@ public class RegularGrim extends Entity {
                 case RIGHT -> setworldX(getworldX() + speed);
             }
         }
+        if(invincible) {
+            invincibleCounter++;
+            if(invincibleCounter > 60) { // 60 frames = 1 seconde (à 60 FPS)
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
     }
 
     @Override
@@ -115,6 +122,10 @@ public class RegularGrim extends Entity {
         int screenX = getworldX() - gamePanel.player.getworldX() + gamePanel.player.screenx;
         int screenY = getworldY() - gamePanel.player.getworldY() + gamePanel.player.screeny;
 
+        if (invincible){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.4f));
+        }
         g2.drawImage(image, screenX, screenY, null);
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1f));
     }
 }

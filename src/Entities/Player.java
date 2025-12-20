@@ -34,8 +34,13 @@ public class Player extends Entity{
         SolidAreaDefaultY = solidArea.y;
         solidArea.width = 32;
         solidArea.height = 32;
+
+        attackArea.width = 36;
+        attackArea.height = 36;
+
         setDefaultValues();
         getPlayerImage();
+        getPlayerAttackImage();
     }
 
     public void setDefaultValues(){
@@ -64,23 +69,43 @@ public class Player extends Entity{
 
     }
 
-    public void update(){
+    public void getPlayerAttackImage(){
+        attackUp1 = setup("Ghost_upAttack");
+        attackUp2 = setup("Ghost_upAttack");
+        attackLeft1 = setup("Ghost_leftAttack");
+        attackLeft2 = setup("Ghost_leftAttack1");
+        attackRight1 = setup("Ghost_rightAttack");
+        attackRight2 = setup("Ghost_rightAttack1");
+        attackDown1 = setup("Ghost_downAttack");
+        attackDown2 = setup("Ghost_downAttack");
+    }
 
-        // Utilisation des setters pour mettre à jour la direction dans l'objet Entity
+    public void update(){
+        if (keyHandler.isSpacePressed() && !attacking) {
+            attacking = true;
+            spriteCounter = 0;
+            keyHandler.setSpacePressed(false);
+        }
+
+        if (attacking) {
+            attacking();
+        }
+
+        // 2️⃣ ALWAYS read movement input
         if (keyHandler.getUpPressed()){
-            this.setDirection(Direction.UP);
+            setDirection(Direction.UP);
         }
         else if (keyHandler.getDownPressed()){
-            this.setDirection(Direction.DOWN);
+            setDirection(Direction.DOWN);
         }
         else if (keyHandler.getLeftPressed()){
-            this.setDirection(Direction.LEFT);
+            setDirection(Direction.LEFT);
         }
         else if (keyHandler.getRightPressed()){
-            this.setDirection(Direction.RIGHT);
+            setDirection(Direction.RIGHT);
         }
         else {
-            this.setDirection(Direction.NotSpecified);
+            setDirection(Direction.NotSpecified);
         }
 
         // check tile collision
@@ -143,21 +168,74 @@ public class Player extends Entity{
         }
     }
 
+    private void attacking() {
+        spriteCounter++;
+
+        if (spriteCounter <= 5){
+            spriteNumber = 1;
+        }
+        if (spriteCounter > 5 && spriteCounter <= 25){
+            spriteNumber = 2;
+
+            // Save the current worldX, worldY, solidArea
+            int currentWorldX = getworldX();
+            int currentWorldY = getworldY();
+            int solidAreaWidth = solidArea.width;
+            int solidAreaHeight = solidArea.height;
+            switch (getDirection()){
+                case UP -> setworldY(getworldY()-attackArea.height);
+                case DOWN -> setworldY(getworldY()+attackArea.height);
+                case LEFT -> setworldX(getworldX()-attackArea.width);
+                case RIGHT -> setworldX(getworldX()+attackArea.width);
+            }
+            solidArea.width = attackArea.width;
+            solidArea.height = attackArea.height;
+
+            int enemyIndex = gamePanel.ccheker.checkEntity(this, gamePanel.enemies);
+            damageEnemy(enemyIndex);
+
+            setworldX(currentWorldX);
+            setworldY(currentWorldY);
+            solidArea.width = solidAreaWidth;
+            solidArea.height = solidAreaHeight;
+        }
+        if (spriteCounter > 25){
+            spriteNumber = 1;
+            spriteCounter = 0;
+            attacking = false;
+        }
+    }
+
+    private void damageEnemy(int enemyIndex) {
+        if (enemyIndex != 999){
+            if (!gamePanel.enemies[enemyIndex].invincible){
+
+                gamePanel.enemies[enemyIndex].life -=1;
+                gamePanel.enemies[enemyIndex].invincible = true;
+
+                if (gamePanel.enemies[enemyIndex].life <= 0){
+                    gamePanel.enemies[enemyIndex]=null;
+                }
+            }
+        }
+    }
 
 
     public void ContactEnemie(int i) {
         if(i != 999) {
-            if(!invincible) {
+            Entity enemy = gamePanel.enemies[i];
+
+            // Ignore damage if enemy is invincible
+            if (enemy.invincible) {
+                return;
+            }
+
+            if (!invincible) {
                 life -= 1;
                 invincible = true;
-                invincibleCounter = 0; // Réinitialiser le compteur
+                invincibleCounter = 0;
             }
         }
-    }
-    public void DamageEnemie(int i)
-    {  if (i != 999){
-
-    }
     }
     public void pickUpObject (int i) {
         if (i != 999){
@@ -170,35 +248,43 @@ public class Player extends Entity{
         // Utilisation du getter pour lire la direction
         switch(this.getDirection()){
             case UP :
-                if (spriteNumber == 1){
-                    image=up;
+                if (!attacking){
+                    if (spriteNumber == 1) image=up;
+                    if (spriteNumber == 2) image=up1;
                 }
-                if (spriteNumber == 2){
-                    image=up1;
+                else {
+                    if (spriteNumber == 1) image=attackUp1;
+                    if (spriteNumber == 2) image=attackUp2;
                 }
                 break;
             case DOWN :
-                if (spriteNumber == 1){
-                    image=down;
+                if (!attacking){
+                    if (spriteNumber == 1) image=down;
+                    if (spriteNumber == 2) image=down1;
                 }
-                if (spriteNumber == 2){
-                    image=down1;
+                else {
+                    if (spriteNumber == 1) image=attackDown1;
+                    if (spriteNumber == 2) image=attackDown2;
                 }
                 break;
             case LEFT:
-                if (spriteNumber == 1){
-                    image=left;
+                if (!attacking) {
+                    if (spriteNumber == 1) image=left;
+                    if (spriteNumber == 2) image=left1;
                 }
-                if (spriteNumber == 2){
-                    image=left1;
+                else {
+                    if (spriteNumber == 1) image=attackLeft1;
+                    if (spriteNumber == 2) image=attackLeft2;
                 }
                 break;
             case RIGHT:
-                if (spriteNumber == 1){
-                    image=right;
+                if (!attacking) {
+                    if (spriteNumber == 1) image=right;
+                    if (spriteNumber == 2) image=right1;
                 }
-                if (spriteNumber == 2){
-                    image=right1;
+                else {
+                    if (spriteNumber == 1) image=attackRight1;
+                    if (spriteNumber == 2) image=attackRight2;
                 }
                 break;
             default:

@@ -11,6 +11,7 @@ public class Entity {
     private int worldx,worldy;
     public int speed;
     private BufferedImage idle,up1,up2,down1,down2,left1,left2,right1,right2;
+    BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
     private Direction direction;
     public int spriteCounter = 0;
     public int spriteNum = 1;
@@ -24,6 +25,9 @@ public class Entity {
     public boolean invincible = false;
     public int  invincibleCounter = 0;
     public int type;
+    boolean attacking = false;
+    public Rectangle attackArea = new Rectangle(0,0,0,0);
+
     public Entity(){
 
     }

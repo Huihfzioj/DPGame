@@ -101,6 +101,14 @@ public class SkeletonLord extends Entity {
             }
         }
 
+        if(invincible) {
+            invincibleCounter++;
+            if(invincibleCounter > 60) { // 60 frames = 1 seconde (à 60 FPS)
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
+
         spriteCounter++;
         if (spriteCounter > 20) { // faster than player = more aggressive feel
             spriteNum = (spriteNum == 1) ? 2 : 1;
@@ -132,7 +140,11 @@ public class SkeletonLord extends Entity {
         int screenX = getworldX() - gamePanel.player.getworldX() + gamePanel.player.screenx;
         int screenY = getworldY() - gamePanel.player.getworldY() + gamePanel.player.screeny;
 
-        g2.drawImage(image, screenX, screenY, null);
-    }
+        if (invincible){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.4f));
+        }
 
+        g2.drawImage(image, screenX, screenY, null);
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,1f));
+    }
 }
