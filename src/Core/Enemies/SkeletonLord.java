@@ -31,7 +31,9 @@ public class SkeletonLord extends Entity {
         setworldX(GamePanel.tileSize * 23);
         setworldY(GamePanel.tileSize * 21);
 
-
+        attack = 6;
+        defense = 0;
+        exp = 3;
         getImages();
     }
 
@@ -91,7 +93,19 @@ public class SkeletonLord extends Entity {
 
         collisionOn = false;
         gamePanel.ccheker.chektile(this);
+        boolean contactPlayer = gamePanel.ccheker.checkPlayer(this);
 
+        if (contactPlayer){
+            if (!gamePanel.player.invincible){
+                //gamePanel.playSE(6);
+                int damage = attack - gamePanel.player.defense;
+                if(damage < 0){
+                    damage = 0;
+                }
+                gamePanel.player.life -= damage;
+                gamePanel.player.invincible = true;
+            }
+        }
         if (!collisionOn) {
             switch (getDirection()) {
                 case UP -> setworldY(getworldY() - speed);

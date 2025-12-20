@@ -29,6 +29,10 @@ public class RegularGrim extends Entity {
         setSolidAreaDefaultX(solidArea.x);
         setSolidAreaDefaultY(solidArea.y);
 
+        attack = 5;
+        defense = 0;
+        exp = 2;
+
         getImages();
     }
 
@@ -88,7 +92,19 @@ public class RegularGrim extends Entity {
 
         collisionOn = false;
         gamePanel.ccheker.chektile(this);
+        boolean contactPlayer = gamePanel.ccheker.checkPlayer(this);
 
+        if (contactPlayer) {
+            if (!gamePanel.player.invincible) {
+                //gamePanel.playSE(6);
+                int damage = attack - gamePanel.player.defense;
+                if (damage < 0) {
+                    damage = 0;
+                }
+                gamePanel.player.life -= damage;
+                gamePanel.player.invincible = true;
+            }
+        }
         if (!collisionOn) {
             switch (getDirection()) {
                 case UP -> setworldY(getworldY() - speed);

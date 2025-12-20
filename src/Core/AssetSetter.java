@@ -17,12 +17,27 @@ public class AssetSetter {
     public void setObject() {
     }
     public void setEnemy(){
+        int i = 0;
         EnemyFactory grimFactory = new RegularGrimFactory();
-        gp.enemies[0] = grimFactory.createEnemy(gp);
-        gp.enemies[0].setworldX(GamePanel.tileSize * 23);
-        gp.enemies[0].setworldY(GamePanel.tileSize * 20);
-
+        gp.enemies[i] = grimFactory.createEnemy(gp);
+        gp.enemies[i].setworldX(GamePanel.tileSize * 23);
+        gp.enemies[i].setworldY(GamePanel.tileSize * 20);
+        i++;
         EnemyFactory skeletonFactory = new SkeletonFactory();
-        gp.enemies[1] = skeletonFactory.createEnemy(gp);
+        gp.enemies[i] = skeletonFactory.createEnemy(gp);
+        gp.enemies[i].setworldX(GamePanel.tileSize * 24);
+        gp.enemies[i].setworldY(GamePanel.tileSize * 20);
+        i++;
+        gp.enemies[i] = grimFactory.createEnemy(gp);
+        gp.enemies[i].setworldX(GamePanel.tileSize * 24);
+        gp.enemies[i].setworldY(GamePanel.tileSize * 37);
+        i++;
+        gp.enemies[i] = skeletonFactory.createEnemy(gp);
+        gp.enemies[i].setworldX(GamePanel.tileSize * 34);
+        gp.enemies[i].setworldY(GamePanel.tileSize * 42);
+        i++;
+        gp.enemies[i] = skeletonFactory.createEnemy(gp);
+        gp.enemies[i].setworldX(GamePanel.tileSize * 38);
+        gp.enemies[i].setworldY(GamePanel.tileSize * 42);
     }
 }
