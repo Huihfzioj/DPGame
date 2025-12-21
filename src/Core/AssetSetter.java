@@ -166,6 +166,7 @@ public class AssetSetter {
             }
         }
 
+        LOGGER.info("[FACTORY] AssetSetter using factories to spawn enemies");
         RegularGrimFactory grimFactory = new RegularGrimFactory();
         SkeletonFactory skeletonFactory = new SkeletonFactory();
 
