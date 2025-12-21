@@ -163,16 +163,16 @@ public class Player extends Entity{
             // Utilisation du getter pour lire la direction
             switch(this.getDirection()) {
                 case UP:
-                    this.setworldY(this.getworldY()-this.getSpeed());
+                    this.setworldY(this.getworldY()-gamePanel.playerComponent.getSpeed());
                     break;
                 case DOWN:
-                    this.setworldY(this.getworldY()+this.getSpeed());
+                    this.setworldY(this.getworldY()+gamePanel.playerComponent.getSpeed());
                     break;
                 case LEFT:
-                    this.setworldX(this.getworldX()-this.getSpeed());
+                    this.setworldX(this.getworldX()-gamePanel.playerComponent.getSpeed());
                     break;
                 case RIGHT:
-                    this.setworldX(this.getworldX()+this.getSpeed());
+                    this.setworldX(this.getworldX()+gamePanel.playerComponent.getSpeed());
                     break;
                 case NotSpecified:
                     break; // Ne bouge pas
@@ -247,7 +247,8 @@ public class Player extends Entity{
         if (enemyIndex != 999){
             if (!gamePanel.enemies[enemyIndex].invincible){
                 gamePanel.playSE(5);
-                int damage = attack - gamePanel.enemies[enemyIndex].defense;
+                int currentAttack = gamePanel.playerComponent.getAttack();
+                int damage = currentAttack - gamePanel.enemies[enemyIndex].defense;
                 if (damage < 0){
                     damage = 0;
                 }

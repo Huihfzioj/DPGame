@@ -133,7 +133,9 @@ public class CharacterState implements GameState{
                 gamePanel.player.life + "/" + gamePanel.player.maxLife,
                 String.valueOf(gamePanel.player.strength),
                 String.valueOf(gamePanel.player.dexterity),
-                String.valueOf(gamePanel.player.attack),
+                String.valueOf(gamePanel.player.attack) +
+                        (gamePanel.playerComponent.getAttack() - gamePanel.player.attack > 0 ?
+                                " + " + (gamePanel.playerComponent.getAttack() - gamePanel.player.attack) : ""),
                 String.valueOf(gamePanel.player.defense),
                 String.valueOf(gamePanel.player.exp),
                 String.valueOf(gamePanel.player.nextLevelExp),

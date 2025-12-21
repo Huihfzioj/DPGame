@@ -1,5 +1,8 @@
 package Core;
 
+import Core.Boosters.BasePlayerComponent;
+import Core.Boosters.PlayerComponent;
+import Core.Boosters.TimedPlayerDecorator;
 import Core.Events.DamagePitEvent;
 import Core.Events.HealingPoolEvent;
 import Core.Events.EventHandler;
@@ -44,6 +47,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     public GameState gameState;
     public Entity[] enemies = new Entity[20];
+    public PlayerComponent playerComponent;
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth,screenHeight));
@@ -54,6 +58,7 @@ public class GamePanel extends JPanel implements Runnable{
         this.gameState=new MenuState(this);
         LOGGER.info("Game started"); // ✅ LOG DEMANDÉ
         LOGGER.info("[STATE] Game: null -> MENU");
+        playerComponent = new BasePlayerComponent(player);
 
         setUpEvents();
     }
@@ -127,6 +132,15 @@ public class GamePanel extends JPanel implements Runnable{
 
 
     public void update() {
+        if (playerComponent != null) {
+            playerComponent.update();
+
+            // unwrap expired decorators
+            while (playerComponent instanceof TimedPlayerDecorator decorator
+                    && decorator.isExpired()) {
+                playerComponent = decorator.wrapped;
+            }
+        }
         if (gameState !=null) {
             gameState.handleInput(keyHandler);
             gameState.update();
