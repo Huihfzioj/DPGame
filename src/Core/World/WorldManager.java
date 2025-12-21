@@ -8,6 +8,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static Core.GameLogger.LOGGER;
+
 public class WorldManager implements WorldComponent {
     private List<WorldComponent> worlds;
     private World currentWorld;
@@ -18,6 +20,7 @@ public class WorldManager implements WorldComponent {
         this.gp = gp;
         this.worlds = new ArrayList<>();
         initializeWorlds();
+        LOGGER.info("[COMPOSITE] WorldManager initialized with " + worlds.size() + " worlds");
     }
 
     private void initializeWorlds() {
@@ -29,18 +32,22 @@ public class WorldManager implements WorldComponent {
         Zone startingZone = new Zone("Forest Clearing", 1, "/maps/world01.txt");
         startingZone.setRequiredMemories(1); // This zone has 1 memory fragment
         forestWorld.addComponent(startingZone);
+        LOGGER.info("[COMPOSITE] Zone added to World: Forest Clearing -> Misty Forest");
 
         // Zone 1-2: Deep Forest
         Zone deepForest = new Zone("Deep Forest", 2, "/maps/world02.txt");
         deepForest.setRequiredMemories(1); // This zone has 1 memory fragment
         forestWorld.addComponent(deepForest);
+        LOGGER.info("[COMPOSITE] Zone added to World: Deep Forest -> Misty Forest");
 
         // Zone 1-3: Ancient Ruins
         Zone ancientRuins = new Zone("Ancient Ruins", 5, "/maps/world03.txt");
         ancientRuins.setRequiredMemories(1); // This zone has 1 memory fragment
         forestWorld.addComponent(ancientRuins);
+        LOGGER.info("[COMPOSITE] Zone added to World: Ancient Ruins -> Misty Forest");
 
         worlds.add(forestWorld);
+        LOGGER.info("[COMPOSITE] World added to WorldManager: Misty Forest (Level 1)");
 
         // === WORLD 2: Frozen Mountains ===
         World mountainWorld = new World("Frozen Mountains", 2);
@@ -51,13 +58,16 @@ public class WorldManager implements WorldComponent {
         Zone mountainPass = new Zone("Mountain Pass", 8, "/maps/world04.txt");
         mountainPass.setRequiredMemories(2);
         mountainWorld.addComponent(mountainPass);
+        LOGGER.info("[COMPOSITE] Zone added to World: Mountain Pass -> Frozen Mountains");
 
         // Zone 2-2: Peak Sanctuary
         Zone peakSanctuary = new Zone("Peak Sanctuary", 10, "/maps/world05.txt");
         peakSanctuary.setRequiredMemories(2);
         mountainWorld.addComponent(peakSanctuary);
+        LOGGER.info("[COMPOSITE] Zone added to World: Peak Sanctuary -> Frozen Mountains");
 
         worlds.add(mountainWorld);
+        LOGGER.info("[COMPOSITE] World added to WorldManager: Frozen Mountains (Level 2) - LOCKED");
 
         // === WORLD 3: Lava Caverns ===
         World lavaWorld = new World("Lava Caverns", 3);
@@ -67,16 +77,21 @@ public class WorldManager implements WorldComponent {
         Zone magmaChamber = new Zone("Magma Chamber", 15, "/maps/world06.txt");
         magmaChamber.setRequiredMemories(3);
         lavaWorld.addComponent(magmaChamber);
+        LOGGER.info("[COMPOSITE] Zone added to World: Magma Chamber -> Lava Caverns");
 
         Zone crystalCavern = new Zone("Crystal Cavern", 18, "/maps/world07.txt");
         crystalCavern.setRequiredMemories(2);
         lavaWorld.addComponent(crystalCavern);
+        LOGGER.info("[COMPOSITE] Zone added to World: Crystal Cavern -> Lava Caverns");
 
         worlds.add(lavaWorld);
+        LOGGER.info("[COMPOSITE] World added to WorldManager: Lava Caverns (Level 3) - LOCKED");
 
         // Set initial world and zone
         currentWorld = forestWorld;
         currentZone = startingZone;
+        LOGGER.info("[COMPOSITE] Current World set to: Misty Forest");
+        LOGGER.info("[COMPOSITE] Current Zone set to: Forest Clearing");
     }
 
     public void updateBasedOnPlayerLevel(int playerLevel) {
@@ -88,6 +103,7 @@ public class WorldManager implements WorldComponent {
                 if (playerLevel >= world.getWorldLevel() * 3) {
                     world.setUnlocked(true);
                     if (!wasUnlocked) {
+                        LOGGER.info("[COMPOSITE] World unlocked: " + world.getName() + " (Level " + world.getWorldLevel() + ")");
                         gp.ui.addMessage("World unlocked: " + world.getName() + "!");
                     }
                 }
@@ -100,11 +116,9 @@ public class WorldManager implements WorldComponent {
                 WorldComponent component = currentWorld.getChild(i);
                 if (component instanceof Zone zone) {
                     boolean wasUnlocked = zone.isUnlocked();
-                    if (playerLevel >= zone.getLevelRequirement()) {
+                    if (!wasUnlocked && playerLevel >= zone.getLevelRequirement()) {
                         zone.setUnlocked(true);
-                        if (!wasUnlocked) {
-                            gp.ui.addMessage("Zone unlocked: " + zone.getName() + "!");
-                        }
+                        gp.ui.addMessage("Zone unlocked: " + zone.getName() + "!");
                     }
                 }
             }
