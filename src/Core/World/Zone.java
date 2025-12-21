@@ -7,6 +7,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static Core.GameLogger.LOGGER;
+
 public class Zone implements WorldComponent {
     private String name;
     private int levelRequirement;
@@ -28,12 +30,15 @@ public class Zone implements WorldComponent {
         this.completed = false;
         this.enemies = new ArrayList<>();
         this.objects = new ArrayList<>();
+        LOGGER.info("[COMPOSITE] Zone created: " + name + " (Level " + levelRequirement + ")");
     }
 
     public void collectMemory() {
         collectedMemories++;
+        LOGGER.info("[COMPOSITE] Memory collected in " + name + ": " + collectedMemories + "/" + requiredMemories);
         if (collectedMemories >= requiredMemories && requiredMemories > 0) {
             // All memories collected in this zone
+            LOGGER.info("[COMPOSITE] Zone completed: " + name + " - All memories collected!");
             System.out.println("All memories collected in " + name);
         }
     }
@@ -52,10 +57,12 @@ public class Zone implements WorldComponent {
 
     public void addEnemy(Entity enemy) {
         enemies.add(enemy);
+        LOGGER.info("[COMPOSITE] Enemy added to Zone " + name + ": " + enemy.name);
     }
 
     public void addObject(SuperObject obj) {
         objects.add(obj);
+        LOGGER.info("[COMPOSITE] Object added to Zone " + name + ": " + obj.name);
     }
 
     public List<Entity> getEnemies() {
@@ -84,6 +91,9 @@ public class Zone implements WorldComponent {
 
     public void setUnlocked(boolean unlocked) {
         this.unlocked = unlocked;
+        if (unlocked) {
+            LOGGER.info("[COMPOSITE] Zone unlocked: " + name);
+        }
     }
 
     public boolean isCompleted() {
@@ -92,6 +102,9 @@ public class Zone implements WorldComponent {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+        if (completed) {
+            LOGGER.info("[COMPOSITE] Zone marked as completed: " + name);
+        }
     }
 
     @Override
