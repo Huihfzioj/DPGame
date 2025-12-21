@@ -269,19 +269,12 @@ public class UI {
                 totalZones++;
                 if (zone.isComplete()) {
                     completedZones++;
-                    System.out.println("Zone " + zone.getName() + " is complete!");
-                } else {
-                    System.out.println("Zone " + zone.getName() + " NOT complete:");
-                    System.out.println("  Enemies alive: " + countAliveEnemies(zone));
-                    System.out.println("  Memories: " + zone.getCollectedMemories() +
-                            "/" + zone.getRequiredMemories());
                 }
             }
         }
 
         if (totalZones == 0) return 0;
         int progress = (completedZones * 100) / totalZones;
-        System.out.println("World Progress: " + progress + "% (" + completedZones + "/" + totalZones + ")");
         return progress;
     }
 
