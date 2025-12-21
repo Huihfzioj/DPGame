@@ -84,7 +84,6 @@ public class GameOver implements GameState {
             if (gamePanel.ui.uiMenuIndex == 0) {
                 gamePanel.retry();
                 gamePanel.stopMusic();
-                gamePanel.playMusic(0);
                 gamePanel.setGameState(new PlayState(gamePanel));
             } else if (gamePanel.ui.uiMenuIndex == 1) {
                 gamePanel.player = new Player(gamePanel, gamePanel.keyHandler);

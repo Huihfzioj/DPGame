@@ -8,6 +8,8 @@ import Core.Events.HealingPoolEvent;
 import Core.Events.EventHandler;
 import Core.GameStates.GameState;
 import Core.GameStates.MenuState;
+import Core.World.WorldManager;
+import Core.World.Zone;
 import Core.tile.TileManager;
 import Core.Entities.Entity;
 import Core.Entities.Player;
@@ -28,6 +30,7 @@ public class GamePanel extends JPanel implements Runnable{
     public final int maxScreenRow=12;
     public final int screenWidth= tileSize*maxScreenCol;
     public final int screenHeight= tileSize*maxScreenRow;
+    public EventHandler eventHandler = new EventHandler(this);
     public TileManager tileM = new TileManager(this);
     public UI ui=new UI(this) ;
   // world settings
@@ -43,11 +46,12 @@ public class GamePanel extends JPanel implements Runnable{
 
     public Player player = new Player(this,keyHandler);
     public SuperObject obj[] = new SuperObject[10];
-    public EventHandler eventHandler = new EventHandler(this);
+
 
     public GameState gameState;
     public Entity[] enemies = new Entity[20];
     public PlayerComponent playerComponent;
+    public WorldManager worldManager;
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth,screenHeight));
@@ -58,10 +62,23 @@ public class GamePanel extends JPanel implements Runnable{
         this.gameState=new MenuState(this);
         LOGGER.info("Game started"); // ✅ LOG DEMANDÉ
         LOGGER.info("[STATE] Game: null -> MENU");
+        this.worldManager = new WorldManager(this);
         playerComponent = new BasePlayerComponent(player);
 
         setUpEvents();
+        setupWorld();
     }
+
+    private void setupWorld() {
+        worldManager.updateBasedOnPlayerLevel(player.level);
+        Zone startingZone = worldManager.getCurrentZone();
+        if (startingZone != null) {
+            // Populate starting zone with enemies and objects
+            aSetter.populateZone(startingZone);
+            worldManager.loadZoneContent(startingZone);
+        }
+    }
+
     public void setupGame (){
         LOGGER.info("Setting up game objects and enemies");
         aSetter.setObject();
@@ -116,6 +133,11 @@ public class GamePanel extends JPanel implements Runnable{
         player.setDefaultValues();
         player.setDefaultPositions();
         player.setItems();
+        worldManager.reset();
+        setupWorld();
+
+        // Reset decorator chain
+        playerComponent = new BasePlayerComponent(player);
         aSetter.setObject();
         aSetter.setEnemy();
     }
@@ -141,6 +163,12 @@ public class GamePanel extends JPanel implements Runnable{
                 playerComponent = decorator.wrapped;
             }
         }
+        // Update world manager
+        worldManager.update();
+        // Check world progression based on player level
+        worldManager.updateBasedOnPlayerLevel(player.level);
+        worldManager.checkWorldProgression();
+
         if (gameState !=null) {
             gameState.handleInput(keyHandler);
             gameState.update();
