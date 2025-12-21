@@ -6,11 +6,14 @@ import Core.GamePanel;
 import Core.KeyHandler;
 import Core.Entities.Entity;
 
+import static Core.GameLogger.LOGGER;
+
 public class PlayState implements GameState {
     private GamePanel game;
 
     public PlayState(GamePanel game) {
         this.game = game;
+        LOGGER.info("[STATE] Game: MENU -> PLAYING");
     }
 
     @Override
@@ -28,6 +31,7 @@ public class PlayState implements GameState {
         game.player.update();       // délégué au player
         // objets, collisions, etc.
         if (game.player.life <= 0){
+            LOGGER.info("[STATE] Game: PLAYING -> GAME_OVER (Player defeated)");
             game.setGameState(new GameOver(game,this));
         }
     }

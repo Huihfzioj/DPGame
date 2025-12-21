@@ -12,6 +12,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.logging.Logger;
+
+import static Core.GameLogger.LOGGER;
 
 public class Player extends Entity{
     GamePanel gamePanel;
@@ -65,6 +68,11 @@ public class Player extends Entity{
         currentShield = new OBJ_Shield(gamePanel);
         attack = getAttack();
         defense = getDefense();
+        
+        // LOG: État initial du joueur
+        LOGGER.info("[PLAYER] Initialized - Life: " + life + "/" + maxLife + 
+                    ", Level: " + level + ", Direction: " + getDirection() + 
+                    ", Attack: " + attack + ", Defense: " + defense);
     }
 
     public void setDefaultPositions(){
@@ -118,6 +126,8 @@ public class Player extends Entity{
     }
 
     public void update(){
+        Direction previousDirection = getDirection();
+        
         if (keyHandler.isSpacePressed() && !attacking) {
             attacking = true;
             spriteCounter = 0;
@@ -143,6 +153,11 @@ public class Player extends Entity{
         }
         else {
             setDirection(Direction.NotSpecified);
+        }
+
+        // LOG: Changement de direction
+        if (previousDirection != getDirection() && getDirection() != Direction.NotSpecified) {
+            LOGGER.info("[PLAYER] Direction changed: " + previousDirection + " -> " + getDirection());
         }
 
         // check tile collision
@@ -253,11 +268,18 @@ public class Player extends Entity{
                     damage = 0;
                 }
                 gamePanel.enemies[enemyIndex].life -= damage;
+                // LOG: Dégâts infligés à l'ennemi
+                LOGGER.info("[PLAYER] Attacks " + gamePanel.enemies[enemyIndex].name + 
+                            " - Damage dealt: " + damage + 
+                            " (" + gamePanel.enemies[enemyIndex].name + " HP: " + 
+                            gamePanel.enemies[enemyIndex].life + "/" + gamePanel.enemies[enemyIndex].maxLife + ")");
                 gamePanel.ui.addMessage(damage + " damage !");
                 gamePanel.enemies[enemyIndex].invincible = true;
                 gamePanel.enemies[enemyIndex].damageReaction(gamePanel);
                 if (gamePanel.enemies[enemyIndex].life <= 0){
                     gamePanel.enemies[enemyIndex].dying = true;
+                    LOGGER.info("[PLAYER] Killed " + gamePanel.enemies[enemyIndex].name + 
+                                " - Gained " + gamePanel.enemies[enemyIndex].exp + " exp");
                     gamePanel.ui.addMessage("Killed the "+ gamePanel.enemies[enemyIndex].name+"!");
                     gamePanel.ui.addMessage( "Exp "+ gamePanel.enemies[enemyIndex].exp+"!");
                     exp += gamePanel.enemies[enemyIndex].exp;
@@ -276,6 +298,10 @@ public class Player extends Entity{
             dexterity++;
             attack = getAttack();
             defense = getDefense();
+            // LOG: Augmentation de niveau
+            LOGGER.info("[PLAYER] Level up! - New Level: " + level + 
+                        ", Max Life: " + maxLife + ", Strength: " + strength + 
+                        ", Dexterity: " + dexterity);
             gamePanel.playSE(7);
             GameState previous = gamePanel.gameState;
             gamePanel.ui.message = "You are level " + level + " now!\n";
@@ -300,6 +326,10 @@ public class Player extends Entity{
                     damage = 0;
                 }
                 life -= damage;
+                // LOG: Dégâts reçus du joueur
+                LOGGER.info("[PLAYER] Hit by " + enemy.name + 
+                            " - Damage received: " + damage + 
+                            " (Player HP: " + life + "/" + maxLife + ")");
                 invincible = true;
                 invincibleCounter = 0;
             }

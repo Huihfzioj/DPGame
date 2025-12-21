@@ -5,6 +5,8 @@ import Core.Boosters.SpeedBoostDecorator;
 import Core.GamePanel;
 import Core.GameStates.DialogueState;
 
+import static Core.GameLogger.LOGGER;
+
 public class HealingPoolEvent implements EventAction{
     @Override
     public boolean execute(GamePanel game) {
@@ -12,6 +14,7 @@ public class HealingPoolEvent implements EventAction{
             return false; // Not executed yet
         }
 
+        LOGGER.info("[STRATEGY] HealingPoolEvent executing - Player healed + Boost applied");
         game.ui.message = "You are standing on a healing pool. \nYour life has been recovered!";
         game.gameState = new DialogueState(game, game.gameState);
         game.player.life = game.player.maxLife;

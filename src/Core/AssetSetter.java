@@ -5,6 +5,9 @@ import Core.Enemies.RegularGrim;
 import Core.Enemies.RegularGrimFactory;
 import Core.Enemies.SkeletonFactory;
 import object.*;
+import java.util.logging.Logger;
+
+import static Core.GameLogger.LOGGER;
 
 public class AssetSetter {
     GamePanel gp;
@@ -34,6 +37,8 @@ public class AssetSetter {
         gp.obj[i].worldY = GamePanel.tileSize * 28;
     }
     public void setEnemy(){
+        // LOG: Utilisation des factories pour créer les ennemis
+        LOGGER.info("[FACTORY] AssetSetter using factories to spawn enemies");
         int i = 0;
         EnemyFactory grimFactory = new RegularGrimFactory();
         gp.enemies[i] = grimFactory.createEnemy(gp);

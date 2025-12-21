@@ -9,6 +9,9 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
+import java.util.logging.Logger;
+
+import static Core.GameLogger.LOGGER;
 
 public class RegularGrim extends Entity {
     GamePanel gamePanel;
@@ -34,6 +37,10 @@ public class RegularGrim extends Entity {
         exp = 2;
 
         getImages();
+        
+        // LOG: Création d'un ennemi
+        LOGGER.info("[ENEMY] " + name + " spawned - Life: " + life + "/" + maxLife + 
+                    ", Attack: " + attack + ", Direction: " + getDirection());
     }
 
     @Override
@@ -66,6 +73,7 @@ public class RegularGrim extends Entity {
         actionLockCounter++;
 
         if(actionLockCounter == 120){
+            Direction previousDirection = getDirection();
             Random random = new Random();
             int i = random.nextInt(100)+1;
 
@@ -82,6 +90,10 @@ public class RegularGrim extends Entity {
                 setDirection(Direction.RIGHT);
             }
 
+            // LOG: Changement de direction
+            if (previousDirection != getDirection()) {
+                LOGGER.info("[ENEMY] " + name + " Direction changed: " + previousDirection + " -> " + getDirection());
+            }
             actionLockCounter=0;
         }
     }
@@ -102,6 +114,9 @@ public class RegularGrim extends Entity {
                     damage = 0;
                 }
                 gamePanel.player.life -= damage;
+                // LOG: Attaque de l'ennemi
+                LOGGER.info("[ENEMY] " + name + " attacks Player - Damage dealt: " + damage + 
+                            " (Player HP: " + gamePanel.player.life + "/" + gamePanel.player.maxLife + ")");
                 gamePanel.player.invincible = true;
             }
         }
