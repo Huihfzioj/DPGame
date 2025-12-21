@@ -79,6 +79,14 @@ Chaque événement est implémenté comme une stratégie indépendante :
 
 Ce pattern permet d’ajouter de nouveaux événements sans modifier la logique existante.
 
+### 5. Composite Pattern
+
+Le **Composite Pattern** est utilisé pour représenter la structure hiérarchique des niveaux du jeu.
+
+Chaque monde est composé de plusieurs zones, et chaque zone peut contenir différents éléments du jeu tels que des ennemis, des obstacles et des événements interactifs.
+
+Ce pattern permet de traiter de manière uniforme les mondes et leurs composants, tout en facilitant l’ajout, la modification ou la suppression de niveaux et de zones sans impacter le reste du code.
+
 ---
 
 ## Installation
