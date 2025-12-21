@@ -5,6 +5,9 @@ import Core.Enemies.SkeletonFactory;
 import Core.Entities.Entity;
 import Core.World.Zone;
 import object.*;
+import java.util.logging.Logger;
+
+import static Core.GameLogger.LOGGER;
 
 import java.util.ArrayList;
 import java.util.HashSet;
