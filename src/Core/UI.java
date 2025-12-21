@@ -7,7 +7,11 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import Core.Entities.Entity;
 import Core.GameStates.*;
+import Core.World.World;
+import Core.World.WorldComponent;
+import Core.World.Zone;
 import object.OBJ_Heart;
 import object.SuperObject;
 
@@ -28,6 +32,9 @@ public class UI {
     BufferedImage heart_full,heart_half,heart_blank;
     Graphics2D graphics2D;
     public int uiMenuIndex = 0;
+    private String zoneTransitionText = null;
+    private int zoneTransitionTimer = 0;
+
 
     public UI(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -69,6 +76,11 @@ public class UI {
                 gamePanel.gameState instanceof CharacterState ||
                 gamePanel.gameState instanceof DialogueState) {
             drawPlayerLife();
+        }
+        if (gamePanel.gameState instanceof PlayState) {
+            drawWorldInfo();
+            drawZoneTransition();
+
         }
     }
     public void drawPauseScreen(Graphics2D g2){
@@ -190,4 +202,127 @@ public class UI {
         g2.setStroke(new BasicStroke(5));
         g2.drawRoundRect(x+5,y+5,width-10,height-10,25,25);
     }
+    private void drawWorldInfo() {
+        World currentWorld = gamePanel.worldManager.getCurrentWorld();
+        Zone currentZone = gamePanel.worldManager.getCurrentZone();
+
+        if (currentWorld != null && currentZone != null) {
+            graphics2D.setColor(Color.WHITE);
+            graphics2D.setFont(graphics2D.getFont().deriveFont(Font.BOLD, 16F));
+
+            // Draw world name and zone name
+            String worldText = "World: " + currentWorld.getName();
+            String zoneText = "Zone: " + currentZone.getName();
+
+            int x = gamePanel.screenWidth - 200;
+            int y = 30;
+
+            graphics2D.drawString(worldText, x, y);
+            graphics2D.drawString(zoneText, x, y + 25);
+
+            // Draw memory info
+            String memoryText = "Memories: " + currentZone.getCollectedMemories() +
+                    "/" + currentZone.getRequiredMemories();
+            graphics2D.drawString(memoryText, x, y + 50);
+
+            // Draw enemy info
+            int aliveEnemies = 0;
+            for (Entity enemy : currentZone.getEnemies()) {
+                if (enemy != null && enemy.isAlive()) {
+                    aliveEnemies++;
+                }
+            }
+            String enemyText = "Enemies: " + aliveEnemies;
+            graphics2D.drawString(enemyText, x, y + 75);
+
+            // Draw progress
+            if (currentWorld.isUnlocked()) {
+                String progress = "Progress: " + getWorldProgress(currentWorld) + "%";
+                graphics2D.drawString(progress, x, y + 100);
+            }
+
+            // Debug: Show if zone is complete
+            if (currentZone.isComplete()) {
+                graphics2D.setColor(Color.GREEN);
+                graphics2D.drawString("ZONE COMPLETE!", x, y + 125);
+            }
+        } else {
+            // Debug: Show why world/zone is null
+            graphics2D.setColor(Color.RED);
+            graphics2D.setFont(graphics2D.getFont().deriveFont(Font.BOLD, 16F));
+            graphics2D.drawString("World: " + (currentWorld != null ? currentWorld.getName() : "NULL"),
+                    gamePanel.screenWidth - 200, 30);
+            graphics2D.drawString("Zone: " + (currentZone != null ? currentZone.getName() : "NULL"),
+                    gamePanel.screenWidth - 200, 50);
+        }
+    }
+
+    private int getWorldProgress(World world) {
+        if (world == null) return 0;
+
+        int totalZones = 0;
+        int completedZones = 0;
+
+        for (int i = 0; i < world.components.size(); i++) {
+            WorldComponent component = world.getChild(i);
+            if (component instanceof Zone zone) {
+                totalZones++;
+                if (zone.isComplete()) {
+                    completedZones++;
+                    System.out.println("Zone " + zone.getName() + " is complete!");
+                } else {
+                    System.out.println("Zone " + zone.getName() + " NOT complete:");
+                    System.out.println("  Enemies alive: " + countAliveEnemies(zone));
+                    System.out.println("  Memories: " + zone.getCollectedMemories() +
+                            "/" + zone.getRequiredMemories());
+                }
+            }
+        }
+
+        if (totalZones == 0) return 0;
+        int progress = (completedZones * 100) / totalZones;
+        System.out.println("World Progress: " + progress + "% (" + completedZones + "/" + totalZones + ")");
+        return progress;
+    }
+
+    private int countAliveEnemies(Zone zone) {
+        int alive = 0;
+        for (Entity enemy : zone.getEnemies()) {
+            if (enemy != null && enemy.isAlive()) {
+                alive++;
+            }
+        }
+        return alive;
+    }
+
+    public void onZoneChanged(Zone newZone) {
+        zoneTransitionText = "Entering: " + newZone.getName();
+        zoneTransitionTimer = 120; // 2 seconds at 60 FPS
+    }
+
+    private void drawZoneTransition() {
+        if (zoneTransitionTimer > 0 && zoneTransitionText != null) {
+            zoneTransitionTimer--;
+
+            graphics2D.setFont(font.deriveFont(Font.BOLD, 32F));
+            graphics2D.setColor(new Color(0, 0, 0, 180));
+            graphics2D.fillRoundRect(
+                    gamePanel.screenWidth / 4,
+                    gamePanel.screenHeight / 2 - 35,
+                    gamePanel.screenWidth / 2,
+                    70,
+                    20, 20
+            );
+
+            graphics2D.setColor(Color.WHITE);
+            int x = getXForCenteredText(graphics2D, zoneTransitionText);
+            int y = gamePanel.screenHeight / 2 + 10;
+            graphics2D.drawString(zoneTransitionText, x, y);
+
+            if (zoneTransitionTimer == 0) {
+                zoneTransitionText = null;
+            }
+        }
+    }
+
 }

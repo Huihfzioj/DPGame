@@ -4,7 +4,10 @@ import Core.GamePanel;
 import Core.GameStates.DialogueState;
 import Core.GameStates.GameState;
 import Core.KeyHandler;
+import Core.World.World;
+import Core.World.Zone;
 import object.OBJ_Key;
+import object.OBJ_Memory;
 import object.OBJ_Shield;
 import object.OBJ_Sword;
 
@@ -292,7 +295,7 @@ public class Player extends Entity{
     private void checkLevelUp() {
         if (exp >= nextLevelExp){
             level++;
-            nextLevelExp *=2;
+            nextLevelExp *= 2;
             maxLife += 2;
             strength++;
             dexterity++;
@@ -304,8 +307,14 @@ public class Player extends Entity{
                         ", Dexterity: " + dexterity);
             gamePanel.playSE(7);
             GameState previous = gamePanel.gameState;
+            gamePanel.ui.addMessage("You reached level " + level + "!");
+
+            // Check for new world/zone unlocks
+            gamePanel.worldManager.updateBasedOnPlayerLevel(level);
+
+            // Show level up dialogue
             gamePanel.ui.message = "You are level " + level + " now!\n";
-            gamePanel.setGameState(new DialogueState(gamePanel,previous));
+            gamePanel.setGameState(new DialogueState(gamePanel, previous));
         }
     }
 
@@ -337,16 +346,16 @@ public class Player extends Entity{
     }
     public void pickUpObject (int i) {
         if (i != 999){
-            String text;
-            if(inventory.size() != maxInventorySize){
+            if (gamePanel.obj[i] instanceof OBJ_Memory) {
+                gamePanel.worldManager
+                        .getCurrentWorld()
+                        .collectMemoryInZone(
+                                gamePanel.worldManager.getCurrentZone().getName()
+                        );
+            }
+            else {
                 inventory.add(gamePanel.obj[i]);
-                gamePanel.playSE(1);
-                text = "Got a " + gamePanel.obj[i].name + "!";
             }
-            else{
-                text = "You cannot carry any more !";
-            }
-            gamePanel.ui.addMessage(text);
             gamePanel.obj[i]=null;
         }
     }

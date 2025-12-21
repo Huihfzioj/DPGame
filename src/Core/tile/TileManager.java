@@ -5,6 +5,10 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
+
+import Core.Events.DamagePitEvent;
+import Core.Events.HealingPoolEvent;
+import Core.Events.TeleportingEvent;
 import Core.GamePanel;
 import Core.UtilityTool;
 
@@ -26,12 +30,16 @@ public class TileManager {
     }
 
     public void getTileImage(){
-            setup(0,"grass",false);
-            setup(1,"wall",true);
-            setup(2,"water",true);
-            setup(3,"earth",false);
-            setup(4,"tree",true);
-            setup(5,"sand",false);
+        setup(0,"grass",false);
+        setup(1,"wall",true);
+        setup(2,"water",true);
+        setup(3,"earth",false);
+        setup(4,"tree",true);
+        setup(5,"sand",false);
+        // EVENT TILES
+        setup(6,"heal",false);
+        setup(7,"teleport",false);
+        setup(8,"pit",false);
     }
     public void  setup(int index, String imagePath,boolean collision){
         UtilityTool uTool=new UtilityTool();
@@ -65,6 +73,11 @@ public class TileManager {
                 for(int col = 0; col < gp.maxWorldCol && col < numbers.length; col++){
                     int num = Integer.parseInt(numbers[col]);
                     mapTileNum[col][row] = num;
+                    switch (num) {
+                        case 6 -> gp.eventHandler.addEvent(col, row, new HealingPoolEvent());
+                        case 7 -> gp.eventHandler.addEvent(col, row, new TeleportingEvent());
+                        case 8 -> gp.eventHandler.addEvent(col, row, new DamagePitEvent());
+                    }
                 }
                 row++;
             }
