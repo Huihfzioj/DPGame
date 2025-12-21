@@ -203,9 +203,6 @@ public class AssetSetter {
                 enemy.setworldX(position[0]);
                 enemy.setworldY(position[1]);
                 zone.addEnemy(enemy);
-                System.out.println("Placed enemy at: " + position[0] + ", " + position[1] +
-                        " (tile: " + (position[0]/GamePanel.tileSize) + "," +
-                        (position[1]/GamePanel.tileSize) + ")");
             }
         }
 
@@ -216,7 +213,6 @@ public class AssetSetter {
             memory1.worldX = memoryPos[0];
             memory1.worldY = memoryPos[1];
             zone.addObject(memory1);
-            System.out.println("Placed memory at: " + memoryPos[0] + ", " + memoryPos[1]);
         }
 
         // Add key
@@ -226,7 +222,6 @@ public class AssetSetter {
             key.worldX = keyPos[0];
             key.worldY = keyPos[1];
             zone.addObject(key);
-            System.out.println("Placed key at: " + keyPos[0] + ", " + keyPos[1]);
         }
     }
 
@@ -253,7 +248,6 @@ public class AssetSetter {
                 enemy.setworldX(position[0]);
                 enemy.setworldY(position[1]);
                 zone.addEnemy(enemy);
-                System.out.println("Placed enemy at: " + position[0] + ", " + position[1]);
             }
         }
 
@@ -264,7 +258,6 @@ public class AssetSetter {
             memory1.worldX = memoryPos[0];
             memory1.worldY = memoryPos[1];
             zone.addObject(memory1);
-            System.out.println("Placed memory at: " + memoryPos[0] + ", " + memoryPos[1]);
         }
 
         // Add health potion
@@ -274,7 +267,6 @@ public class AssetSetter {
             potion.worldX = potionPos[0];
             potion.worldY = potionPos[1];
             zone.addObject(potion);
-            System.out.println("Placed potion at: " + potionPos[0] + ", " + potionPos[1]);
         }
     }
 
@@ -301,7 +293,6 @@ public class AssetSetter {
                 enemy.setworldX(position[0]);
                 enemy.setworldY(position[1]);
                 zone.addEnemy(enemy);
-                System.out.println("Placed enemy at: " + position[0] + ", " + position[1]);
             }
         }
 
@@ -312,7 +303,6 @@ public class AssetSetter {
             memory1.worldX = memoryPos[0];
             memory1.worldY = memoryPos[1];
             zone.addObject(memory1);
-            System.out.println("Placed memory at: " + memoryPos[0] + ", " + memoryPos[1]);
         }
 
         // Add loot items
@@ -333,7 +323,6 @@ public class AssetSetter {
                     loot.worldX = lootPos[0];
                     loot.worldY = lootPos[1];
                     zone.addObject(loot);
-                    System.out.println("Placed " + lootType + " at: " + lootPos[0] + ", " + lootPos[1]);
                 }
             }
         }
