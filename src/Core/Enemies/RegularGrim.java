@@ -2,8 +2,8 @@ package Core.Enemies;
 
 import Core.GamePanel;
 import Core.UtilityTool;
-import Entities.Direction;
-import Entities.Entity;
+import Core.Entities.Direction;
+import Core.Entities.Entity;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

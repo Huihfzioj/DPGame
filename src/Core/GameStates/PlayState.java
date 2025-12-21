@@ -4,7 +4,7 @@ import java.awt.*;
 
 import Core.GamePanel;
 import Core.KeyHandler;
-import Entities.Entity;
+import Core.Entities.Entity;
 
 public class PlayState implements GameState {
     private GamePanel game;
@@ -27,6 +27,9 @@ public class PlayState implements GameState {
         }
         game.player.update();       // délégué au player
         // objets, collisions, etc.
+        if (game.player.life <= 0){
+            game.gameState = new GameOver(game,this);
+        }
     }
 
     @Override

@@ -1,7 +1,6 @@
 package Core;
 
-import Entities.Entity;
-import Entities.Direction; // Ajout de l'import pour être explicite
+import Core.Entities.Entity;
 
 public class CollisionChecker {
     GamePanel gp;

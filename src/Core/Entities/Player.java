@@ -1,21 +1,17 @@
-package Entities;
+package Core.Entities;
 
 import Core.GamePanel;
-import Core.GameStates.CharacterState;
 import Core.GameStates.DialogueState;
 import Core.GameStates.GameState;
 import Core.KeyHandler;
-import Core.UI;
-import Core.UtilityTool;
+import object.OBJ_Key;
 import object.OBJ_Shield;
 import object.OBJ_Sword;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import static Core.GamePanel.tileSize;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class Player extends Entity{
     GamePanel gamePanel;
@@ -27,6 +23,10 @@ public class Player extends Entity{
     public final int screenx;
     public final int screeny;
     //public int haskey = 0;
+
+    public ArrayList<Entity> inventory = new ArrayList<>();
+    public final int maxInventorySize = 20;
+
     public Player(GamePanel gamePanel,KeyHandler keyHandler){
         this.gamePanel=gamePanel;
         this.keyHandler=keyHandler;
@@ -40,12 +40,10 @@ public class Player extends Entity{
         solidArea.width = 32;
         solidArea.height = 32;
 
-        attackArea.width = 36;
-        attackArea.height = 36;
-
         setDefaultValues();
         getPlayerImage();
         getPlayerAttackImage();
+        setItems();
     }
 
     public void setDefaultValues(){
@@ -69,7 +67,13 @@ public class Player extends Entity{
         defense = getDefense();
     }
 
+    public void setItems(){
+        inventory.add(currentWeapon);
+        inventory.add(currentShield);
+        inventory.add(new OBJ_Key(gamePanel));
+    }
     public int getAttack() {
+        attackArea = currentWeapon.attackArea;
         return strength * currentWeapon.attackValue;
     }
     public int getDefense() {
@@ -291,6 +295,17 @@ public class Player extends Entity{
     }
     public void pickUpObject (int i) {
         if (i != 999){
+            String text;
+            if(inventory.size() != maxInventorySize){
+                inventory.add(gamePanel.obj[i]);
+                gamePanel.playSE(1);
+                text = "Got a " + gamePanel.obj[i].name + "!";
+            }
+            else{
+                text = "You cannot carry any more !";
+            }
+            gamePanel.ui.addMessage(text);
+            gamePanel.obj[i]=null;
         }
     }
 
@@ -356,5 +371,4 @@ public class Player extends Entity{
        // graphics2D.setColor(Color.white);
        // graphics2D.drawString("Invincible:" + invincibleCounter, 10, 400);
     }
-
 }

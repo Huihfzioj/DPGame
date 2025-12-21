@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
     GamePanel gamePanel;
-    private boolean upPressed, downPressed, leftPressed, rightPressed,enterPressed,pPressed,spacePressed,cPressed;
+    private boolean upPressed, downPressed, leftPressed, rightPressed,enterPressed,pPressed,spacePressed,cPressed,zPressed,sPressed,qPressed,dPressed;
     //DEBUG
     boolean checkDrawTime=false;
 
@@ -29,6 +29,10 @@ public class KeyHandler implements KeyListener {
             case KeyEvent.VK_P -> pPressed = true;
             case KeyEvent.VK_SPACE -> spacePressed = true;
             case KeyEvent.VK_C -> cPressed = true;
+            case KeyEvent.VK_Z -> zPressed = true;
+            case KeyEvent.VK_Q -> qPressed = true;
+            case KeyEvent.VK_S -> sPressed = true;
+            case KeyEvent.VK_D -> dPressed = true;
             case KeyEvent.VK_T -> {
                 if (checkDrawTime==false){
                     checkDrawTime=true;
@@ -58,6 +62,9 @@ public class KeyHandler implements KeyListener {
         }
         if(code == KeyEvent.VK_P){
             pPressed=false;
+        }
+        if(code == KeyEvent.VK_ENTER){
+            enterPressed=false;
         }
     }
 
@@ -115,5 +122,37 @@ public class KeyHandler implements KeyListener {
 
     public void setcPressed(boolean cPressed) {
         this.cPressed = cPressed;
+    }
+
+    public boolean iszPressed() {
+        return zPressed;
+    }
+
+    public void setzPressed(boolean zPressed) {
+        this.zPressed = zPressed;
+    }
+
+    public boolean issPressed() {
+        return sPressed;
+    }
+
+    public void setsPressed(boolean sPressed) {
+        this.sPressed = sPressed;
+    }
+
+    public boolean isqPressed() {
+        return qPressed;
+    }
+
+    public void setqPressed(boolean qPressed) {
+        this.qPressed = qPressed;
+    }
+
+    public boolean isdPressed() {
+        return dPressed;
+    }
+
+    public void setdPressed(boolean dPressed) {
+        this.dPressed = dPressed;
     }
 }

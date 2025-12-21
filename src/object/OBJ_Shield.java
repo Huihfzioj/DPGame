@@ -1,8 +1,9 @@
 package object;
 
+import Core.Entities.Type;
 import Core.GamePanel;
 import Core.UtilityTool;
-import Entities.Entity;
+import Core.Entities.Entity;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -13,9 +14,12 @@ public class OBJ_Shield extends Entity {
 
     public OBJ_Shield(GamePanel gamePanel){
         this.gamePanel = gamePanel;
+
+        type = Type.SHIELD;
         name = "Wood Shield";
         setDown1(setup("shield_wood"));
         defenseValue = 1;
+        description = "["+ name +"]\n"+"A wooden shield";
     }
 
     @Override

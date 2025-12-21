@@ -3,17 +3,16 @@ package Core;
 import Core.Events.DamagePitEvent;
 import Core.Events.HealingPoolEvent;
 import Core.Events.EventHandler;
-import Core.Events.TeleportingEvent;
 import Core.GameStates.GameState;
 import Core.GameStates.MenuState;
 import Core.tile.TileManager;
-import Entities.Entity;
-import Entities.Player;
+import Core.Entities.Entity;
+import Core.Entities.Player;
 import object.SuperObject;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+
 import static Core.GameLogger.LOGGER;
 
 

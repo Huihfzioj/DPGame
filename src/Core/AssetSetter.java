@@ -4,10 +4,7 @@ import Core.Enemies.EnemyFactory;
 import Core.Enemies.RegularGrim;
 import Core.Enemies.RegularGrimFactory;
 import Core.Enemies.SkeletonFactory;
-import object.OBJ_Boots;
-import object.OBJ_Chest;
-import object.OBJ_Door;
-import object.OBJ_Key;
+import object.*;
 
 public class AssetSetter {
     GamePanel gp;
@@ -15,6 +12,26 @@ public class AssetSetter {
         this.gp = gp;
     }
     public void setObject() {
+        int i=0;
+        gp.obj[i] = new OBJ_Key(gp);
+        gp.obj[i].worldX = GamePanel.tileSize * 25;
+        gp.obj[i].worldY = GamePanel.tileSize * 23;
+        i++;
+        gp.obj[i] = new OBJ_Key(gp);
+        gp.obj[i].worldX = GamePanel.tileSize * 21;
+        gp.obj[i].worldY = GamePanel.tileSize * 19;
+        i++;
+        gp.obj[i] = new OBJ_Axe(gp);
+        gp.obj[i].worldX = GamePanel.tileSize * 26;
+        gp.obj[i].worldY = GamePanel.tileSize * 21;
+        i++;
+        gp.obj[i] = new OBJ_BlueShield(gp);
+        gp.obj[i].worldX = GamePanel.tileSize * 35;
+        gp.obj[i].worldY = GamePanel.tileSize * 21;
+        i++;
+        gp.obj[i] = new OBJ_RedPotion(gp);
+        gp.obj[i].worldX = GamePanel.tileSize * 23;
+        gp.obj[i].worldY = GamePanel.tileSize * 28;
     }
     public void setEnemy(){
         int i = 0;
