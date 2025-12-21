@@ -1,12 +1,14 @@
 package object;
 
+import Core.Entities.Entity;
 import Core.GamePanel;
 import Core.UtilityTool;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class SuperObject {
+public class SuperObject extends Entity {
     public BufferedImage image ,image2,image3;
     public String name;
     public boolean collision = false;
@@ -27,5 +29,24 @@ public class SuperObject {
 
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
         }
+    }
+
+    @Override
+    public void update() {
+
+    }
+
+    @Override
+    public BufferedImage setup(String imageName){
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null ;
+        try{
+            image = ImageIO.read(getClass().getResourceAsStream("/objects/"+imageName+".png"));
+            image = uTool.scaleImage(image, GamePanel.tileSize,GamePanel.tileSize);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  image;
     }
 }

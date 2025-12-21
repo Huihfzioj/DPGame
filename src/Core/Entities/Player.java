@@ -11,6 +11,7 @@ import object.OBJ_Sword;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Player extends Entity{
     GamePanel gamePanel;
@@ -38,9 +39,6 @@ public class Player extends Entity{
         SolidAreaDefaultY = solidArea.y;
         solidArea.width = 32;
         solidArea.height = 32;
-
-        attackArea.width = 36;
-        attackArea.height = 36;
 
         setDefaultValues();
         getPlayerImage();
@@ -72,14 +70,10 @@ public class Player extends Entity{
     public void setItems(){
         inventory.add(currentWeapon);
         inventory.add(currentShield);
-        inventory.add(currentWeapon);
-        inventory.add(currentShield);
-        inventory.add(currentWeapon);
-        inventory.add(currentShield);
-        inventory.add(currentWeapon);
-        inventory.add(currentShield);
+        inventory.add(new OBJ_Key(gamePanel));
     }
     public int getAttack() {
+        attackArea = currentWeapon.attackArea;
         return strength * currentWeapon.attackValue;
     }
     public int getDefense() {
@@ -301,6 +295,17 @@ public class Player extends Entity{
     }
     public void pickUpObject (int i) {
         if (i != 999){
+            String text;
+            if(inventory.size() != maxInventorySize){
+                inventory.add(gamePanel.obj[i]);
+                gamePanel.playSE(1);
+                text = "Got a " + gamePanel.obj[i].name + "!";
+            }
+            else{
+                text = "You cannot carry any more !";
+            }
+            gamePanel.ui.addMessage(text);
+            gamePanel.obj[i]=null;
         }
     }
 
@@ -366,5 +371,4 @@ public class Player extends Entity{
        // graphics2D.setColor(Color.white);
        // graphics2D.drawString("Invincible:" + invincibleCounter, 10, 400);
     }
-
 }

@@ -1,5 +1,6 @@
 package object;
 
+import Core.Entities.Entity;
 import Core.GamePanel;
 import Core.UtilityTool;
 
@@ -13,12 +14,9 @@ public class OBJ_Key extends SuperObject {
 
 
         name = "Key";
-        try {
-            image = ImageIO.read(getClass().getResourceAsStream("/objects/key.png"));
-            uTool.scaleImage(image,gp.tileSize,gp.tileSize);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        description = "["+ name +"]\n"+"A key that opens locked \n doors hiding memories";
+        image = setup("key");
+        image = uTool.scaleImage(image,GamePanel.tileSize,GamePanel.tileSize);
+        setDown1(image);
     }
 }

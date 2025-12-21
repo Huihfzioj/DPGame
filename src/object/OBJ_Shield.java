@@ -1,5 +1,6 @@
 package object;
 
+import Core.Entities.Type;
 import Core.GamePanel;
 import Core.UtilityTool;
 import Core.Entities.Entity;
@@ -13,6 +14,8 @@ public class OBJ_Shield extends Entity {
 
     public OBJ_Shield(GamePanel gamePanel){
         this.gamePanel = gamePanel;
+
+        type = Type.SHIELD;
         name = "Wood Shield";
         setDown1(setup("shield_wood"));
         defenseValue = 1;

@@ -1,5 +1,7 @@
 package Core.GameStates;
 
+import Core.Entities.Entity;
+import Core.Entities.Type;
 import Core.GamePanel;
 import Core.KeyHandler;
 
@@ -44,8 +46,15 @@ public class CharacterState implements GameState{
         final int slotYstart = frameY + 20;
         int slotX = slotXstart;
         int slotY = slotYstart;
+
         //Draw player's items
         for(int i = 0; i < gamePanel.player.inventory.size();i++){
+            //Equip cursor
+            if (gamePanel.player.inventory.get(i) == gamePanel.player.currentWeapon ||
+                    gamePanel.player.inventory.get(i) == gamePanel.player.currentShield){
+                g2.setColor(new Color(240,190,90));
+                g2.fillRoundRect(slotX,slotY,GamePanel.tileSize-2,GamePanel.tileSize-2,10,10);
+            }
             g2.drawImage(gamePanel.player.inventory.get(i).getDown1(),slotX,slotY,null);
             slotX += GamePanel.tileSize;
 
@@ -70,7 +79,7 @@ public class CharacterState implements GameState{
         int dFrameY = frameY + frameHeight;
         int dFrameWidth = frameWidth;
         int dFrameHeight = GamePanel.tileSize * 3;
-        gamePanel.ui.drawSubWindow(g2,dFrameX,dFrameY,dFrameWidth,dFrameHeight);
+
         //Draw description text
         int textX = dFrameX + 20;
         int textY = dFrameY + GamePanel.tileSize;
@@ -79,6 +88,7 @@ public class CharacterState implements GameState{
         int itemIndex = getItemIndexOnSlot();
 
         if (itemIndex < gamePanel.player.inventory.size()){
+            gamePanel.ui.drawSubWindow(g2,dFrameX,dFrameY,dFrameWidth,dFrameHeight);
             String[] lines = gamePanel.player.inventory.get(itemIndex).description.split("\n"); // split by newline
 
             for (String line : lines) {
@@ -179,8 +189,31 @@ public class CharacterState implements GameState{
             }
             keyHandler.setsPressed(false);
         }
+        if(keyHandler.isEnterPressed()){
+            selectItem();
+            keyHandler.setEnterPressed(false);
+        }
     }
     public int getItemIndexOnSlot(){
         return slotCol + (slotRow *5 );
+    }
+    public void selectItem(){
+        int itemIndex = getItemIndexOnSlot();
+        if (itemIndex < gamePanel.player.inventory.size()){
+            Entity selectedItem = gamePanel.player.inventory.get(itemIndex);
+            if (selectedItem.type == Type.AXE || selectedItem.type == Type.SWORD){
+                gamePanel.player.currentWeapon = selectedItem;
+                gamePanel.player.attack = gamePanel.player.getAttack();
+            }
+            if (selectedItem.type == Type.SHIELD){
+                gamePanel.player.currentShield = selectedItem;
+                gamePanel.player.defense = gamePanel.player.getDefense();
+            }
+            if (selectedItem.type == Type.CONSUMABLE){
+                selectedItem.use(gamePanel.player);
+                gamePanel.player.inventory.remove(itemIndex);
+                gamePanel.setGameState(new DialogueState(gamePanel,previousState));
+            }
+        }
     }
 }

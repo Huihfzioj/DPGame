@@ -27,7 +27,7 @@ public abstract class Entity {
     public int life;
     public boolean invincible = false;
     public int  invincibleCounter = 0;
-    public int type;
+    public Type type;
     boolean attacking = false;
     public Rectangle attackArea = new Rectangle(0,0,0,0);
     boolean alive = true;
@@ -128,6 +128,10 @@ public abstract class Entity {
     }
     public void changeAlpha(Graphics2D g2, float alphaValue){
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,alphaValue));
+    }
+
+    public void use (Entity entity){
+
     }
     // Getter for x
     public int getworldX() {
