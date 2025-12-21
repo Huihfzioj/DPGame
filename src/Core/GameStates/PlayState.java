@@ -28,7 +28,7 @@ public class PlayState implements GameState {
         game.player.update();       // délégué au player
         // objets, collisions, etc.
         if (game.player.life <= 0){
-            game.gameState = new GameOver(game,this);
+            game.setGameState(new GameOver(game,this));
         }
     }
 

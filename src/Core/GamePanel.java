@@ -101,6 +101,19 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
 
+    public void retry(){
+        player.setDefaultPositions();
+        player.restoreLife();
+        aSetter.setEnemy();
+        aSetter.setObject();
+    }
+    public void restart(){
+        player.setDefaultValues();
+        player.setDefaultPositions();
+        player.setItems();
+        aSetter.setObject();
+        aSetter.setEnemy();
+    }
     public void setGameState(GameState newState) {
         if (this.gameState != null && newState != null) {
             LOGGER.info("[STATE] Game: "

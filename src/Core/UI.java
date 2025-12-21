@@ -7,9 +7,7 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import Core.GameStates.MenuState;
-import Core.GameStates.PauseState;
-import Core.GameStates.PlayState;
+import Core.GameStates.*;
 import object.OBJ_Heart;
 import object.SuperObject;
 
@@ -65,7 +63,11 @@ public class UI {
             drawMenuScreen(g2d);
         } else if (gamePanel.gameState instanceof PauseState) {
             drawPauseScreen(g2d);
-        } else if (gamePanel.gameState instanceof PlayState) {
+        }
+        if (gamePanel.gameState instanceof PlayState ||
+                gamePanel.gameState instanceof PauseState ||
+                gamePanel.gameState instanceof CharacterState ||
+                gamePanel.gameState instanceof DialogueState) {
             drawPlayerLife();
         }
     }

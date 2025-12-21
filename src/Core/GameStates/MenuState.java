@@ -28,6 +28,9 @@ public class MenuState implements GameState {
     public void handleInput(KeyHandler keyHandler) {
         if (keyHandler.isEnterPressed()) {
             if (gamePanel.ui.uiMenuIndex == 0){
+                gamePanel.restart(); // This should reset player and game objects
+                gamePanel.stopMusic();
+                gamePanel.playMusic(0);
                 gamePanel.setGameState(new PlayState(gamePanel));
             }
             if (gamePanel.ui.uiMenuIndex == 1){
