@@ -37,7 +37,7 @@ public class AssetSetter {
         int i = 0;
         EnemyFactory grimFactory = new RegularGrimFactory();
         gp.enemies[i] = grimFactory.createEnemy(gp);
-        gp.enemies[i].setworldX(GamePanel.tileSize * 23);
+        gp.enemies[i].setworldX(GamePanel.tileSize * 25);
         gp.enemies[i].setworldY(GamePanel.tileSize * 20);
         i++;
         EnemyFactory skeletonFactory = new SkeletonFactory();

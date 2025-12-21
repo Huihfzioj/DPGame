@@ -67,7 +67,18 @@ public class Player extends Entity{
         defense = getDefense();
     }
 
+    public void setDefaultPositions(){
+        this.setworldX(gamePanel.tileSize *23);
+        this.setworldY(gamePanel.tileSize *21);
+        this.setDirection(Direction.DOWN);
+    }
+
+    public void restoreLife(){
+        life = maxLife;
+        invincible = false;
+    }
     public void setItems(){
+        inventory.clear();
         inventory.add(currentWeapon);
         inventory.add(currentShield);
         inventory.add(new OBJ_Key(gamePanel));
