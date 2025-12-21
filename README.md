@@ -90,3 +90,21 @@ Ce pattern permet d’ajouter de nouveaux événements sans modifier la logique 
 1. Cloner le dépôt :
    ```bash
    git clone [URL]
+## Utilisation
+
+| Action                                              | Touche |
+|-----------------------------------------------------|--------|
+| Déplacement gauche / droite                         | ← / → |
+| Déplacement haut / bas                              | ↑ / ↓ |
+| Attaque                                             | Espace |
+| Ouvrir / fermer la pause                            | P |
+| Quitter un dialogue                                 | P |
+| Ouvrir les statistiques du personnage et l’inventaire | C |
+| Confirmer / Interagir                               | Entrée |
+| Utiliser un Healing Pool                            | Entrée |
+
+### Navigation dans l’inventaire
+| Action | Touche |
+|--------|--------|
+| Naviguer dans l’inventaire | Q / Z / S / D |
+| Équiper un objet | Entrée |
