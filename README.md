@@ -1,92 +1,118 @@
 # Wraith’s Return
 
 ## Nom du Projet
-Wraith’s Return
+**Wraith’s Return**
 
 ## Description
-Wraith’s Return est un jeu 2D où le joueur incarne un fantôme cherchant à revenir à la vie. Pour réussir, il doit retrouver les souvenirs de ses vies antérieures, dispersés dans différents mondes correspondant à ses réincarnations passées. Ces souvenirs sont gardés par des Faucheurs (Grim Reapers) qui tentent d’empêcher son retour dans le monde des vivants.
+**Wraith’s Return** est un jeu 2D développé en Java dans lequel le joueur incarne un fantôme évoluant à travers différents mondes.  
+Ces mondes ne représentent pas directement les anciennes vies du fantôme, mais servent de **niveaux distincts** proposant chacun leurs propres environnements, obstacles et défis.
 
-Le joueur doit explorer, combattre, collecter des fragments de mémoire et progresser à travers plusieurs mondes thématiques inspirés de ses anciennes existences.
+Le joueur explore ces mondes, affronte des ennemis, interagit avec des tuiles spéciales (pièges, soins, téléportation) et progresse grâce à un gameplay modulaire reposant sur plusieurs **design patterns**.
 
-Fonctionnalités principales :
-- Exploration de mondes représentant les anciennes vies du protagoniste.
-- Combat contre différents types de Faucheurs.
-- Collecte de fragments de mémoire pour débloquer la progression.
+L’objectif principal est la survie et la progression à travers les niveaux tout en gérant la santé du personnage et les interactions avec l’environnement.
+
+### Fonctionnalités principales
+- Exploration de plusieurs mondes (niveaux).
+- Système de tuiles interactives (pièges, soins, téléportation).
+- Combat contre des ennemis.
 - Système de power-ups.
-- Gestion d’états du jeu (menu, pause, game over…).
-- Architecture basée sur plusieurs Design Patterns.
+- Gestion des états du jeu (menu, pause, dialogue).
+- Architecture orientée design patterns.
+
+---
 
 ## Membres du Groupe
-- Benhenda Imen
-- Jlassi Hedil
-- Touati Balsem
+- **Benhenda Imen**
+- **Jlassi Hedil**
+- **Touati Balsem**
+- **Abdelli Ameni**
+---
 
 ## Technologies Utilisées
-- Langage : Java 17
-- Framework GUI : Swing
-- Logging : Log4j2
-- Build : Maven
+- **Langage** : Java 17
+- **Interface graphique** : Swing
+- **Logging** : `java.util.logging`
+- **Type de projet** : Projet Java standard (sans Maven ni Gradle)
+
+---
 
 ## Design Patterns Implémentés
 
 ### 1. State Pattern
-Gère les différents états du jeu (Menu, Gameplay, Pause, Game Over) ainsi que certains états internes du joueur (normal, blessé, sous power-up…).
+Utilisé pour gérer les différents états du jeu tels que :
+- Menu
+- Jeu
+- Pause
+- Dialogue
+- Jeu Terminé (GameOver)
+- Stats & Inventaire (CharacterState)
+
+Ce pattern permet de séparer clairement la logique associée à chaque état et d’éviter l’utilisation excessive de conditions complexes.
+
+---
 
 ### 2. Decorator Pattern
-Utilisé pour le système de power-ups (vitesse accrue, attaque renforcée, invincibilité, double saut…).  
-Permet d’ajouter des comportements sans modifier la classe Player.
+Employé pour le système de **power-ups**.
 
-### 3. Composite Pattern
-Employé pour représenter la structure hiérarchique des mondes du jeu :  
-Chaque monde contient plusieurs zones, qui contiennent des ennemis, objets, obstacles, etc.  
-Cela permet une organisation flexible et extensible.
+Il permet d’ajouter dynamiquement des améliorations au joueur (bonus temporaires, capacités supplémentaires) sans modifier la classe de base du joueur.
 
-### 4. Factory Pattern
-Utilisé pour la création des différents types de Faucheurs :
-- Faucheur standard
-- Faucheur volant
-- Gardien d’élite (mini-boss)
-- Gardien des souvenirs (boss de monde)
+---
+
+### 3. Factory Pattern
+Utilisé pour la création des ennemis du jeu.
+
+Types d’ennemis implémentés :
+- **Grim Reaper**
+- **Skeleton**
+
+La factory centralise la logique de création et facilite l’ajout de nouveaux types d’ennemis.
+
+---
+
+### 4. Strategy Pattern
+Utilisé pour la gestion des **événements liés aux tuiles spéciales** du jeu.
+
+Chaque événement est implémenté comme une stratégie indépendante :
+- `DamagePitEvent` : inflige des dégâts au joueur
+- `HealingPoolEvent` : restaure la vie du joueur
+- `TeleportingEvent` : téléporte le joueur vers une autre zone
+
+Ce pattern permet d’ajouter de nouveaux événements sans modifier la logique existante.
+
+### 5. Composite Pattern
+
+Le **Composite Pattern** est utilisé pour représenter la structure hiérarchique des niveaux du jeu.
+
+Chaque monde est composé de plusieurs zones, et chaque zone peut contenir différents éléments du jeu tels que des ennemis, des obstacles et des événements interactifs.
+
+Ce pattern permet de traiter de manière uniforme les mondes et leurs composants, tout en facilitant l’ajout, la modification ou la suppression de niveaux et de zones sans impacter le reste du code.
+
+---
 
 ## Installation
 
 ### Prérequis
 - JDK 17 ou supérieur
-- Maven 3.6+
 
 ### Étapes
 1. Cloner le dépôt :
+   ```bash
    git clone [URL]
-2. Compiler :
-   mvn clean install
-   ou
-   ./gradlew build
-3. Exécuter :
-   java -jar target/wraiths-return.jar
-
 ## Utilisation
 
+| Action                                              | Touche |
+|-----------------------------------------------------|--------|
+| Déplacement gauche / droite                         | ← / → |
+| Déplacement haut / bas                              | ↑ / ↓ |
+| Attaque                                             | Espace |
+| Ouvrir / fermer la pause                            | P |
+| Quitter un dialogue                                 | P |
+| Ouvrir les statistiques du personnage et l’inventaire | C |
+| Confirmer / Interagir                               | Entrée |
+| Utiliser un Healing Pool                            | Entrée |
+
+### Navigation dans l’inventaire
 | Action | Touche |
 |--------|--------|
-| Déplacement gauche/droite | ← / → |
-| Saut | Espace |
-| Attaque | Ctrl |
-| Pause | Échap |
-
-## Structure du Projet
-
-src/
-├── main/java/
-│    ├── game/
-│    │    ├── core/           # Boucle de jeu, gestion du temps, GameState
-│    │    ├── entities/       # Player, GrimReapers, souvenirs
-│    │    ├── levels/         # Composite pattern : mondes + zones
-│    │    ├── patterns/       # Implémentations des design patterns
-│    │    ├── ui/             # JavaFX UI (menus, HUD)
-│    │    └── utils/          # Logging, utilitaires
-├── main/resources/
-│    ├── sprites/
-│    ├── sounds/
-│    └── config/
-└── test/java/
-
+| Naviguer dans l’inventaire | Q / Z / S / D |
+| Équiper un objet | Entrée |

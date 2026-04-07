@@ -1,0 +1,166 @@
+package Core.Enemies;
+
+import Core.GamePanel;
+import Core.UtilityTool;
+import Core.Entities.Direction;
+import Core.Entities.Entity;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Random;
+import java.util.logging.Logger;
+
+import static Core.GameLogger.LOGGER;
+
+public class RegularGrim extends Entity {
+    GamePanel gamePanel;
+    int actionLockCounter = 0;
+    public RegularGrim(GamePanel gamePanel){
+        this.gamePanel=gamePanel;
+
+        name = "Grim Reaper";
+        speed = 1;
+        maxLife = 4;
+        life = maxLife;
+        setDirection(Direction.DOWN); // or any default
+        solidArea = new Rectangle();
+        solidArea.x = 10;
+        solidArea.y = 18;
+        solidArea.width = 42;
+        solidArea.height = 30;
+        setSolidAreaDefaultX(solidArea.x);
+        setSolidAreaDefaultY(solidArea.y);
+
+        attack = 5;
+        defense = 0;
+        exp = 2;
+
+        getImages();
+        
+        // LOG: Création d'un ennemi
+        LOGGER.info("[ENEMY] " + name + " spawned - Life: " + life + "/" + maxLife + 
+                    ", Attack: " + attack + ", Direction: " + getDirection());
+    }
+
+    @Override
+    public BufferedImage setup(String imageName){
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null ;
+        try{
+            image = ImageIO.read(getClass().getResourceAsStream("/Enemies/Grim Reaper/"+imageName+".png"));
+            image = uTool.scaleImage(image, GamePanel.tileSize,GamePanel.tileSize);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  image;
+    }
+
+    public void getImages(){
+        setIdle(setup("grim_idle"));
+        setUp1(setup("grim_up"));
+        setUp2(setup("grim_up"));
+        setDown1(setup("grim_idle"));
+        setDown2(setup("grim_idle"));
+        setLeft1(setup("grim_left"));
+        setRight1(setup("grim_right"));
+        setLeft2(setup("grim_left (1)"));
+        setRight2(setup("grim_right (1)"));
+    }
+
+    public void setAction(){
+        actionLockCounter++;
+
+        if(actionLockCounter == 120){
+            Direction previousDirection = getDirection();
+            Random random = new Random();
+            int i = random.nextInt(100)+1;
+
+            if (i <=25 ){
+                setDirection(Direction.UP);
+            }
+            if (i > 25 && i <= 50){
+                setDirection(Direction.DOWN);
+            }
+            if (i > 50 && i <= 75){
+                setDirection(Direction.LEFT);
+            }
+            if (i > 75 && i <= 100){
+                setDirection(Direction.RIGHT);
+            }
+
+            // LOG: Changement de direction
+            if (previousDirection != getDirection()) {
+                LOGGER.info("[ENEMY] " + name + " Direction changed: " + previousDirection + " -> " + getDirection());
+            }
+            actionLockCounter=0;
+        }
+    }
+    @Override
+    public void update() {
+
+        setAction();
+
+        collisionOn = false;
+        gamePanel.ccheker.chektile(this);
+        boolean contactPlayer = gamePanel.ccheker.checkPlayer(this);
+
+        if (contactPlayer) {
+            if (!gamePanel.player.invincible) {
+                //gamePanel.playSE(6);
+                int damage = attack - gamePanel.player.defense;
+                if (damage < 0) {
+                    damage = 0;
+                }
+                gamePanel.player.life -= damage;
+                // LOG: Attaque de l'ennemi
+                LOGGER.info("[ENEMY] " + name + " attacks Player - Damage dealt: " + damage + 
+                            " (Player HP: " + gamePanel.player.life + "/" + gamePanel.player.maxLife + ")");
+                gamePanel.player.invincible = true;
+            }
+        }
+        if (!collisionOn) {
+            switch (getDirection()) {
+                case UP -> setworldY(getworldY() - speed);
+                case DOWN -> setworldY(getworldY() + speed);
+                case LEFT -> setworldX(getworldX() - speed);
+                case RIGHT -> setworldX(getworldX() + speed);
+            }
+        }
+        if(invincible) {
+            invincibleCounter++;
+            if(invincibleCounter > 60) { // 60 frames = 1 seconde (à 60 FPS)
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
+    }
+
+    public void draw(Graphics2D g2) {
+
+        BufferedImage image;
+
+        switch (getDirection()) {
+            case UP -> image = getUp1();
+            case DOWN -> image = getDown1();
+            case LEFT -> image = getLeft1();
+            case RIGHT -> image = getRight1();
+            default -> image = getIdle();
+        }
+
+        screenX = getworldX() - gamePanel.player.getworldX() + gamePanel.player.screenx;
+        screenY = getworldY() - gamePanel.player.getworldY() + gamePanel.player.screeny;
+        super.draw(g2);
+        if (invincible){
+            hpBar = true;
+            hpBarCounter = 0;
+            changeAlpha(g2,0.4f);
+        }
+        if (isDying()){
+            dyingAnimation(g2);
+        }
+        g2.drawImage(image, screenX, screenY, null);
+        changeAlpha(g2,1f);
+    }
+}
